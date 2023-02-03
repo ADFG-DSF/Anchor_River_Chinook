@@ -1,0 +1,221 @@
+
+    model {
+
+# Spawner Recruit analysis for Anchor River Chinook salmon.
+# YEARS 21-43 with first 6 aerial surveys prior to 2003 used for the R[y] w/out direct spawning abund link PLUS AR(1) component in first 6 R[y]
+
+#T=20 calendar years for which we have weir escapement and possibly age data-2003-2019
+#A=4 return ages (3, 4, 5, 6) (Total age===> 1.1. 1.2,1.3 and 1.4)
+#Data matrix is a T=17 By A=4 structure.
+#BY Returns w/Ricker S-R Link with AR1 Errors
+#R[y] = Total Return from BY y
+#T+A-1 =20+4-1=23 BYs Represented in the age Data (=(T-a.min)+A+(a.min-1) ); BYS= 1997 (=2003-6) - 2016 (=2022-3)
+#Oldest Age of Returning Fish     =6=a.max;
+#Youngest Age of Returnung Fish=3=a.min.
+#We DO NOT Have Spawning Abundances for the First A+a.min -1 = 4+3-1   = 6  => 1-6  BYs   (BYs 1997-2002)
+#We DO        Have  Spawning Abundances for the Remaining T-a.min =17-3= 14 => 7-23 BYs   (BYs 2003-2019)
+#                                              T      = 20
+#                                              a.min  =  3
+#                                              a.max  =  6
+#                                              A      =  4
+
+# Note: R[] corresponds to 1997 through 2019 (length=23)
+# Note  S[] corresponds to 2003 through 2022 (length= 20)
+
+#MODEL:
+
+#  AR Set-Up
+      for (y in (A+a.min):(T+A-1)) {
+      log.R[y] ~ dt(log.R.mean2[y],tau.white,500)
+      R[y] <- exp(log.R[y])
+      log.R.mean1[y] <- log(S[y-a.max]) + lnalpha - beta * S[y-a.max]
+      log.resid[y] <- log(R[y]) - log.R.mean1[y]
+      }
+      #log.resid.vec <- log.resid[(A+a.min):(T+A-1)]
+      log.R.mean2[A+a.min] <- log.R.mean1[A+a.min] + phi * log.resid.0
+      for (y in (A+a.min+1):(T+A-1)) {
+      log.R.mean2[y] <- log.R.mean1[y] + phi * log.resid[y-1]
+      }
+      lnalpha ~ dnorm(0,1.0E-6)I(0,) #Truncation prevents negative log alpha. alpha <1 is unlikely in a sustainable population. COm fish used the same trucation. 
+      beta ~ dnorm(0,1.0E-1)I(6.6E-5,) #truncate at an Seq of 15,000
+      tau.white ~ dgamma(0.01,0.01)
+      alpha <- exp(lnalpha)
+      sigma.white <- 1 / sqrt(tau.white)
+      lnalpha.c <- lnalpha + (sigma.white * sigma.white / 2 / (1-phi*phi) )
+      S.max <- 1 / beta
+      S.eq <- lnalpha.c * S.max
+      S.msy <- S.eq * (0.5 - 0.07*lnalpha.c)
+      U.msy <- lnalpha.c * (0.5 - 0.07*lnalpha.c)
+
+      #  BROOD YEAR RETURNS W/O DIRECT SR LINK:BASE ON AERIAL EXPANSION PLUS AR(1) COMPONENT- New for 2015 analysis; passed by Steve
+      for(y in 1:a.max){
+      Spre[y]~dunif(1,1.0E5)
+      ASpre[y]~dlnorm(log.q.Spre[y],tau.log.AS)
+      log.q.Spre[y]<-log.q.AS2+log.Spre[y]
+      log.Spre[y]<-log(Spre[y])
+      log.R[y]~dt(log.Rpre.mean2[y],tau.white,500)
+      R[y]<-exp(log.R[y])
+      log.Rpre.mean1[y]<-lnalpha+log(Spre[y])-beta*Spre[y]
+      log.resid[y] <- log(R[y]) - log.Rpre.mean1[y]
+      }
+      log.Rpre.mean2[1] <- log.Rpre.mean1[1] + phi * log.resid.0
+      for (y in (2:a.max)) {
+      log.Rpre.mean2[y] <- log.Rpre.mean1[y] + phi * log.resid[y-1]
+      }
+      log.resid.0 ~ dnorm(0,tau.red)T(-3,3)
+      tau.red <- tau.white * (1-phi*phi)
+      sigma.red <- 1 / sqrt(tau.red)
+      phi ~ dunif(-1, 0.95) #avoids 1 which  is instable and leads to unreasonably high lnalpha.c
+
+
+      #  DIRICHLET GENERATION OF RETURNS AT AGE
+      #  GENERATE ALL T+A-1 = 43 MATURITY SCHEDULES, USE ONLY THOSE NECESSARY
+      # DGE: See notes in BUGS and BRUGS notes for explanaiton of this section
+      #  D.scale ~ dbeta(1,9)
+      #D.sum ~ dlnorm(4,6)  # from meta-analysis of 7 estimates of Dsum    #mod
+      #D.scale <- 1 / sqrt(D.sum)
+      D.scale ~ dunif(0,1)
+      D.sum <- 1 / (D.scale * D.scale)
+
+
+      pi[1] ~ dbeta(1,1)
+      pi.2p ~ dbeta(1,1)
+      pi.3p ~ dbeta(1,1)
+      pi[2] <- pi.2p * (1 - pi[1])
+      pi[3] <- pi.3p * (1 - pi[1] - pi[2])
+      pi[4] <- 1 - pi[1] - pi[2] - pi[3]
+      for (a in 1:A) {
+      gamma[a] <- D.sum * pi[a]
+      for (y in 1:(T+A-1)) {
+      g[y,a] ~ dgamma(gamma[a],1)
+      p[y,a] <- g[y,a]/sum(g[y,])
+      }
+      }
+      for (a in 2:A) {
+      sibratio[a] <- pi[a] / pi[a-1]
+      }
+
+      # ASSIGN PRODUCT OF P AND R TO ALL CELLS IN N MATRIX
+      # y SUBSCRIPT INDEXES BROOD YEAR
+      # y=.. IS THE BROOD YEAR OF THE OLDEST FISH IN YEAR 1 (upper right cell)
+      # y=.. IS THE BROOD YEAR OF THE YOUNGEST FISH IN YEAR T (=..) (lower left cell) 													#DGE
+      # FIRST DO INITIAL CELLS WITHOUT SR LINK (x's IN MATRIX BELOW)
+      # THEN DO CELLS DESCENDING WITH SR LINK (y's IN MATRIX BELOW)
+
+      # T      S       1 2 3 4 (Ages)
+      # 2003   s       x x x x
+      # 2004   s       y x x x
+      # 20     s       y y x x
+      # 20     s       y y y x
+      # 20     s       y y y y
+      # 20     s       y y y y
+      # 20..   s       y y y y
+      #        s       .
+      # 2015   s       y y y y
+      # 2016   s       y y y y
+      # 2017   s       y y y y
+      # 2018   s       y y y y
+      # 2019   s       y y y y
+
+      # ASSIGN PRODUCT OF P AND R TO ALL CELLS IN N MATRIX (Matt's code)
+      for (a in 1:A) {
+      for (y in a:(T + (a - 1))) {
+      N.ta[y - (a - 1), (A + 1 - a)] <- p[y, (A + 1 - a)] * R[y]
+      }
+      }
+
+      # MULTINOMIAL SCALE SAMPLING ON TOTAL ANNUAL RETURN N
+      # INDEX t IS CALENDAR YEAR
+      for (t in 1:T) {
+      N[t] <- sum(N.ta[t,1:A])
+      for (a in 1:A) {
+      q[t,a] <- N.ta[t,a] / N[t]
+      }
+      #n[t] <- sum(x[t,1:A])
+      #x[t,1:A] ~ dmulti(q[t,],n[t])
+      x[t,1:A] ~ dmulti(q[t,],n.tot[t])
+      }
+
+      # APPLY MARINE HARVEST (not measured: based on 1997 Deep Creek mu = 4%, harvest was higher 1995 and before; i.e. for 19 years from 1977 through 1995)
+      # mean of beta(50,950)=0.05
+      #for (y in 1:19) {
+      #mu.marine[y] ~ dbeta(50,950)
+      #H.marine[y] <- mu.marine[y] * N[y]
+      #IR[y] <- max(N[y] - H.marine[y],1)
+      #}
+      # mean of beta(40,960)=0.04
+      for (y in 1:T) {                                                         																									#DGE
+      mu.marine[y] ~ dbeta(40,960)
+      H.marine[y] <- mu.marine[y] * N[y]
+      IR[y] <- max(N[y] - H.marine[y],1)
+      }
+
+      # APPLY FRESHWATER HARVEST BELOW SONAR (=MU.T*N) TO GET SPAWNING ESCAPEMENT
+      # DRAW EXPLOITATION RATES FROM COMMON BETA DISTN-hierachical
+      B.scale ~ dunif(0,1)
+      Q.H ~ dbeta(0.1,0.1)T(0.0000001,0.999999) #Truncate to avoid error of 'Slicer stuck at infinite density'
+      B.sum <- 1 / B.scale / B.scale
+      B[1] <- Q.H * B.sum
+      B[2] <- B.sum - B[1]
+      for (y in 1:T) {
+      q.H[y] ~ dbeta(B[1],B[2])T(0.0000001,0.999999) #Truncate to avoid error of 'Slicer stuck at infinite density'
+      F[y] <- q.H[y] * E[y]
+      mu[y] <- 1 - exp(-F[y])
+      H[y] <- mu[y] * IR[y]
+      log.H[y] <- log(H[y])
+      tau.log.H[y] <- 1 / H.cv[y] / H.cv[y]
+      H.hat[y] ~ dlnorm(log.H[y],tau.log.H[y])
+      S[y] <- max(IR[y] - H[y],1)
+      }
+
+      # OBSERVE AERIAL SURVEY COUNTS DURING first 6 YEARS- 2003-2008; USE TO LEVERGAE AERIAL COUNTS IN FIRST 6 BROOD YEARS W/OUT WEIR COUNTS
+      log.q.AS2 ~ dnorm(0,1.0E-4)
+      tau.log.AS ~ dgamma(0.1,0.1)
+      sigma.log.AS <- sqrt(1/tau.log.AS)
+      q.AS <- exp(log.q.AS2)
+      q.AS.inv <- 1 / q.AS
+
+      for(y in 1:6) {                             					#DGE Paired Aerial Survey and weir data for 2003-2008
+      Air.Survey[y] ~ dlnorm(log.qS[y],tau.log.AS)
+      log.qS[y] <- log.q.AS2 + log.S[y]
+      }
+
+      # WEIR DATA
+      for(y in 1:T) {                                                         																								#DGE
+      S.hat[y] ~ dlnorm(log.S[y],tau.log.S[y])
+      log.S[y] <- log(S[y])
+      tau.log.S[y] <- 1 / S.cv[y] / S.cv[y]
+      }
+
+      # # GENERATE FITTED VALUES OF R EVERY S.byinc SPAWNING FISH FOR GRAPHICS;
+      # for (i in 1:S.ninc) {
+      # S.star.1[i] <- S.byinc*i
+      # R.fit[i] <- S.star.1[i] * exp(lnalpha - beta * S.star.1[i])
+      # }
+      # 
+      # # CALCULATE SUSTAINED YIELD AT REGULAR INTERVALS OF S;
+      # # FIND THE PROBABILITY THAT EACH VALUE OF S WILL RESULT IN YIELDS WITHIN 10, 20, & 30 OF MSY;
+      # # FIND THE PROBABILITY OF NOT CONDUCTING RECRUITMENT OVERFISHING AT EACH S;
+      # R.msy <- S.msy * exp(lnalpha - beta * S.msy)*exp(sigma.red*sigma.red/2)
+      # MSY <- R.msy - S.msy
+      # for (i in 1:S.ninc)  {
+      # S.star.2[i] <- S.byinc*i
+      # R.fit2[i] <- S.star.2[i] * exp(lnalpha - beta * S.star.2[i])*exp(sigma.red*sigma.red/2)
+      # SY[i] <- R.fit2[i] - S.star.2[i]
+      # I90[i] <- step(SY[i] - 0.9 * MSY)
+      # I80[i] <- step(SY[i] - 0.8 * MSY)
+      # I70[i] <- step(SY[i] - 0.7 * MSY)
+      # #OF90[i] <- 1 - nOF90[i]
+      # #OF80[i] <- 1 - nOF80[i]
+      # #OF70[i] <- 1 - nOF70[i]
+      # }
+      # #nOF90[1] <- 0
+      # #nOF80[1] <- 0
+      # #nOF70[1] <- 0
+      # #for (i in 2:120) {
+      # #nOF90[i] <- max(I90[i],nOF90[i-1])
+      # #nOF80[i] <- max(I80[i],nOF80[i-1])
+      # #nOF70[i] <- max(I70[i],nOF70[i-1])
+      #}
+      }
+      
