@@ -1,0 +1,50 @@
+---
+title: "Anchor Chinook SR: 2022 update"
+author: "Adam Reimer & Logan Wendling"
+output: 
+  html_document: 
+    keep_md: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, fig.cap = TRUE, fig.align = 'center')
+#load packages
+packs <- c("jagsUI", "tidyverse")
+lapply(packs, require, character.only = TRUE)
+
+#source functions
+function_files <- list.files(path="..\\functions")
+lapply(function_files, function(x) source(paste0("..\\functions\\", x)))
+
+#load datasets
+data_names <- list.files(path="..\\data")
+lapply(data_names, function(x) load(paste0("..\\data\\", x), .GlobalEnv))
+
+post <- readRDS("..\\output\\post_1977on")
+```
+Logan and I updated the Anchor River escapement goal analysis using data through the 2022 season. Two models were considered. One model is an update of the analysis used to update the goal after the 2016 season while the second model was an update of the analysis used to to create FDS07-05. The 2016 analysis truncated the SR data set to include only those years where we had the highest quality data while the analysis from FDS07-05 used all of the available data. Herein we present the results for the model using all available data although the results from the two models were similar. 
+  
+The precision associated with estimates of escapement improve markedly after the sonar/weir was installed although this period also coincides with mostly negative Ricker residuals. This patterns of our best assessments failing to capture high productivity regimes occurs in most of our Chinook SR data sets and is the reason I prefer to use all available data wherever possible.  
+  
+```{r, fig.height = 6, fig.width = 9, fig.cap = "Figure 1. - Estimates of  return, total tun, escapement, and Ricker residuals for Anchor River chinook salmon, 1977-2022"}
+plot_state_full(post)
+```
+  
+We have SR information at a wide range of escapements.
+  
+```{r, fig.height = 6, fig.width = 9, fig.cap="Figure 2. - Ricker curve for Anchor River chinook salmon, 1977-2022"}
+plot_horse_full(post)
+```
+  
+The existing goals are among the most conservative Chinook salmon goals in the state. Given the current parameters estimates that goal is set around the same criteria used in the 2010 escapement goal review (lower bound at $S_{msy}$ and upper bound at $S_{max}$).
+  
+```{r, fig.height = 6, fig.width = 9, fig.cap="Figure 3. - Optimal Yield Probability profile for Anchor River chinook salmon, 1977-2022"}
+profile_full <- get_profile(post)
+plot_profile(profile_full, goal_range = c(3800, 7600))
+```
+  
+  
+Table 1.- Parameter estimates for Anchor River chinook salmon SR analysis, 1977-2022
+```{r}
+table_params_full(post)
+```

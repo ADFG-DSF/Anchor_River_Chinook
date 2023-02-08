@@ -1,0 +1,172 @@
+
+  model {
+
+for (y in (A+a.min):(T+A-1)) {
+    log.R[y] ~ dt(log.R.mean2[y],tau.white,500)
+    R[y] <- exp(log.R[y])
+    log.R.mean1[y] <- log(S[y-a.max]) + lnalpha - beta * S[y-a.max]
+    log.resid[y] <- log(R[y]) - log.R.mean1[y]
+}
+
+log.resid.vec <- log.resid[(A+a.min):(T+A-1)]
+
+log.R.mean2[A+a.min] <- log.R.mean1[A+a.min] + phi * log.resid.0
+
+    for (y in (A+a.min+1):(T+A-1)) {
+    log.R.mean2[y] <- log.R.mean1[y] + phi * log.resid[y-1]
+    }
+
+    lnalpha ~ dnorm(0,1.0E-6)I(0,)
+    beta ~ dnorm(0,1.0E-1)I(0,)
+    phi ~ dnorm(0,1.0E-4)I(-1,1)
+    tau.white ~ dgamma(0.01,0.01)
+    log.resid.0 ~ dnorm(0,tau.red)T(-3,3)
+    alpha <- exp(lnalpha)
+    tau.red <- tau.white * (1-phi*phi)
+    sigma.white <- 1 / sqrt(tau.white)
+    sigma.red <- 1 / sqrt(tau.red)
+    lnalpha.c <- lnalpha + (sigma.white * sigma.white / 2 / (1-phi*phi) )
+    S.max <- 1 / beta
+    S.eq <- lnalpha.c * S.max
+    S.msy <- S.eq * (0.5 - 0.07*lnalpha.c)
+    U.msy <- lnalpha.c * (0.5 - 0.07*lnalpha.c)
+
+    #  BROOD YEAR RETURNS W/O SR LINK DRAWN FROM COMMON LOGNORMAL DISTN
+    #  Updated 12/23/15
+    mean.log.R ~ dnorm(0,1.0E-4)I(0,)
+    tau.R ~ dgamma(0.1,0.1)
+    R.0 <- exp(mean.log.R)
+    sigma.R0 <- 1 / sqrt(tau.R)
+    for (y in 1:a.max) {
+    log.R[y] ~ dt(mean.log.R,tau.R,500)
+    R[y] <- exp(log.R[y])
+    }
+
+    #  DIRICHLET GENERATION OF RETURNS AT AGE
+    #  GENERATE ALL T+A-1 = 42 MATURITY SCHEDULES, USE ONLY THOSE NECESSARY
+    # DGE: See notes in BUGS and BRUGS notes for explanaiton of this section
+    #  D.scale ~ dbeta(1,9)
+    #D.sum ~ dlnorm(4,6)  # from meta-analysis of 7 estimates of Dsum    #mod
+    #D.scale <- 1 / sqrt(D.sum)
+    D.scale ~ dunif(0,1)
+    D.sum <- 1 / (D.scale * D.scale)
+
+
+    pi[1] ~ dbeta(1,1)
+    pi.2p ~ dbeta(1,1)
+    pi.3p ~ dbeta(1,1)
+    pi[2] <- pi.2p * (1 - pi[1])
+    pi[3] <- pi.3p * (1 - pi[1] - pi[2])
+    pi[4] <- 1 - pi[1] - pi[2] - pi[3]
+    for (a in 1:A) {
+    gamma[a] <- D.sum * pi[a]
+    for (y in 1:(T+A-1)) {
+    g[y,a] ~ dgamma(gamma[a],1)
+    p[y,a] <- g[y,a]/sum(g[y,])
+    }
+    }
+    for (a in 2:A) {
+    sibratio[a] <- pi[a] / pi[a-1]
+    }
+
+    # ASSIGN PRODUCT OF P AND R TO ALL CELLS IN N MATRIX
+    # y SUBSCRIPT INDEXES BROOD YEAR
+    # y=1 IS THE BROOD YEAR OF THE OLDEST FISH IN YEAR 1 (upper right cell)
+    # y=42 IS THE BROOD YEAR OF THE YOUNGEST FISH IN YEAR T (=39) (lower left cell) 													#DGE
+    # FIRST DO INITIAL CELLS WITHOUT SR LINK (x's IN MATRIX BELOW)
+    # THEN DO CELLS DESCENDING WITH SR LINK (y's IN MATRIX BELOW)
+
+    # T      S       1 2 3 4 (Ages)
+    # 1977   s       x x x x
+    # 1978   s       y x x x
+    # 1979   s       y y x x
+    # 1980   s       y y y x
+    # 1981   s       y y y y
+    # 1982   s       y y y y
+    # 1983   s       y y y y
+    #        s       .
+    # 2015   s       y y y y
+
+
+    # ASSIGN PRODUCT OF P AND R TO ALL CELLS IN N MATRIX (Matt's code)
+        for (a in 1:A) {
+        for (y in a:(T + (a - 1))) {
+            N.ta[y - (a - 1), (A + 1 - a)] <- p[y, (A + 1 - a)] * R[y]
+            }
+        }
+
+    # MULTINOMIAL SCALE SAMPLING ON TOTAL ANNUAL RETURN N
+    # INDEX t IS CALENDAR YEAR
+    for (t in 1:T) {
+    N[t] <- sum(N.ta[t,1:A])
+    for (a in 1:A) {
+    q[t,a] <- N.ta[t,a] / N[t]
+    }
+    #n[t] <- sum(x[t,1:A])
+    #x[t,1:A] ~ dmulti(q[t,],n[t])
+    x[t,1:A] ~ dmulti(q[t,],n.tot[t])
+       }
+
+    # APPLY MARINE HARVEST (not measured: based on 1997 Deep Creek mu = 4%, harvest was higher 1995 and before; i.e. for 19 years from 1977 through 1995)
+    # mean of beta(50,950)=0.05
+    for (y in 1:19) {
+    mu.marine[y] ~ dbeta(50,950)
+    H.marine[y] <- mu.marine[y] * N[y]
+    IR[y] <- max(N[y] - H.marine[y],1)
+    }
+    # mean of beta(40,960)=0.04
+    for (y in 20:T) {                                                         																									#DGE
+    mu.marine[y] ~ dbeta(40,960)
+    H.marine[y] <- mu.marine[y] * N[y]
+    IR[y] <- max(N[y] - H.marine[y],1)
+    }
+
+    # APPLY FRESHWATER HARVEST BELOW SONAR (=MU.T*N) TO GET SPAWNING ESCAPEMENT
+    # DRAW EXPLOITATION RATES FROM COMMON BETA DISTN-hierachical
+    B.scale ~ dunif(0,1)
+    Q.H ~ dbeta(0.1,0.1)
+    B.sum <- 1 / B.scale / B.scale
+    B[1] <- Q.H * B.sum
+    B[2] <- B.sum - B[1]
+    for (y in 1:T) {
+    q.H[y] ~ dbeta(B[1],B[2])
+    F[y] <- q.H[y] * E[y]
+    mu[y] <- 1 - exp(-F[y])
+    H[y] <- mu[y] * IR[y]
+    log.H[y] <- log(H[y])
+    tau.log.H[y] <- 1 / H.cv[y] / H.cv[y]
+    H.hat[y] ~ dlnorm(log.H[y],tau.log.H[y])
+    S[y] <- max(IR[y] - H[y],1)
+    }
+
+    # OBSERVE AERIAL SURVEY COUNTS UNTIL 2008, WEIR/SONAR ESTIMATES DURING 2003-2015 (13 YEARS)
+    log.q.AS1 ~ dnorm(0,1.0E-4)
+    log.q.AS2 ~ dnorm(0,1.0E-4)
+    tau.log.AS ~ dgamma(0.1,0.1)
+    sigma.log.AS <- sqrt(1/tau.log.AS)
+    q.ASearly <- exp(log.q.AS1) #renamed could not track when names q.A21 and q.AS2
+    q.ASlate <- exp(log.q.AS2)
+    q.AS1.inv <- 1 / q.ASearly
+    q.AS2.inv <- 1 / q.ASlate
+
+    for(y in 1:12) {
+    Air.Survey[y] ~ dlnorm(log.qS1[y],tau.log.AS)
+    log.qS1[y] <- log.q.AS1 + log.S[y]
+    S.hat[y] ~ dlnorm(log.S[y],tau.log.S[y])
+    log.S[y] <- log(S[y])
+    tau.log.S[y] <- 1 / S.cv[y] / S.cv[y]
+    }
+   for(y in 13:Air.Stop) {                                                         																								#DGE
+    Air.Survey[y] ~ dlnorm(log.qS2[y],tau.log.AS)
+    log.qS2[y] <- log.q.AS2 + log.S[y]
+    S.hat[y] ~ dlnorm(log.S[y],tau.log.S[y])
+    log.S[y] <- log(S[y])
+    tau.log.S[y] <- 1 / S.cv[y] / S.cv[y]
+   }
+   # WEIR DATA #I may have added this in 2022 (at least compared to when David di the multiple model test) which would be a significant error
+   for(y in (Air.Stop + 1):T) { 
+    S.hat[y] ~ dlnorm(log.S[y],tau.log.S[y])
+    log.S[y] <- log(S[y])
+    tau.log.S[y] <- 1 / S.cv[y] / S.cv[y]
+  }
+  }

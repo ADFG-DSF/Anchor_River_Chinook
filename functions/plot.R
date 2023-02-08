@@ -388,7 +388,7 @@
 #' lapply(1:2, plot_horse, post_dat = post)
 #'
 #' @export
-plot_horse <- function(post_dat, firstyr = 1997){
+plot_horse_red <- function(post_dat, firstyr = 1997){
   coeflines <-
     data.frame(beta = post_dat$sims.list[["beta"]], lnalpha = post_dat$sims.list[["lnalpha"]]) %>%
     dplyr::sample_n(40) %>%
@@ -415,6 +415,56 @@ plot_horse <- function(post_dat, firstyr = 1997){
   v_dat <-  temp %>% dplyr::filter(name == "R") %>% dplyr::select(vlb = lb, vub = ub, year)
   h_dat <-  temp %>% dplyr::filter(name == "S") %>% dplyr::select(hlb = lb, hub = ub, year)
 
+  text_dat <-  temp %>%
+    dplyr::select(median, name, year) %>%
+    tidyr::spread(name, median) %>%
+    dplyr::filter(!is.na(R) & ! is.na(S)) %>%
+    dplyr::inner_join(v_dat, by = "year") %>%
+    dplyr::inner_join(h_dat, by = "year")
+  
+  upper <- max(quantile(c(text_dat$vub, text_dat$hub), 0.6), text_dat$R, text_dat$S)
+  
+  ggplot2::ggplot(text_dat, ggplot2::aes(x = S, y = R, label = year, ymin = vlb, ymax = vub, xmin = hlb, xmax = hub)) +
+    ggplot2::geom_text() +
+    ggplot2::geom_errorbar(linetype = 2) +
+    ggplot2::geom_errorbarh(linetype = 2) +
+    ggplot2::stat_function(fun=function(x){x * exp(param_50[2, 2] - param_50[1, 2] * x)}, size = 2, linetype = 2) +
+    coeflines +
+    ggplot2::scale_x_continuous("Spawners", limits = c(0, NA), minor_breaks = NULL, labels = scales::comma) +
+    ggplot2::scale_y_continuous("Recruits", minor_breaks = NULL, labels = scales::comma) +
+    ggplot2::coord_cartesian(xlim = c(0, upper), ylim = c(0, upper)) +
+    ggplot2::geom_abline(slope = 1, size = 1) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(strip.background = ggplot2::element_rect(colour="white", fill="white"))
+}
+
+plot_horse_full <- function(post_dat, firstyr = 1977){
+  coeflines <-
+    data.frame(beta = post_dat$sims.list[["beta"]], lnalpha = post_dat$sims.list[["lnalpha"]]) %>%
+    dplyr::sample_n(40) %>%
+    as.matrix() %>%
+    plyr::alply(1, function(coef) {ggplot2::stat_function(fun=function(x){x * exp(coef[2] - coef[1] * x)}, colour="grey", alpha = 0.5)})
+  
+  param_50 <- 
+    post_dat[["summary"]][c("beta", "lnalpha"), "50%", drop = FALSE] %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column()
+  
+  temp <- 
+    post_dat[["summary"]][ , c("2.5%", "50%", "97.5%"), drop = FALSE] %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column() %>%
+    dplyr::rename(lb = "2.5%", median = "50%", ub = "97.5%") %>%
+    dplyr::filter(grepl(paste0("^R\\[\\d+\\]|^S\\[\\d+\\]|^Spre\\[\\d+\\]"), rowname)) %>%
+    dplyr::mutate(name0 = gsub("(.*)\\[\\d+\\]", "\\1", rowname),
+                  name = ifelse(name0 == "Spre", "S", name0),
+                  index = as.numeric(gsub(".*\\[(\\d+)]", "\\1", rowname)), #rename from index0 to index
+                  #index = ifelse(name0 == "S", index0 + 6, index0),
+                  year = (name != "R") * (firstyr - 1 + index) + (name == "R") * (firstyr - 1 - 7 + index)) #this line changes
+  
+  v_dat <-  temp %>% dplyr::filter(name == "R") %>% dplyr::select(vlb = lb, vub = ub, year)
+  h_dat <-  temp %>% dplyr::filter(name == "S") %>% dplyr::select(hlb = lb, hub = ub, year)
+  
   text_dat <-  temp %>%
     dplyr::select(median, name, year) %>%
     tidyr::spread(name, median) %>%
@@ -815,78 +865,74 @@ plot_profile <- function(profile_dat, limit = NULL, rug = TRUE, goal_range = NA,
 #'   }
 #' }
 #' 
-#' #' State Variable Plot
-#' #'
-#' #' Produces a faceted plot of escapement, recruitment, total run, Ricker residuals and harvest rate plotted with 95% confidence envelopes.
-#' #'
-#' #' @param post_dat The SRA model jagsUI output
-#' #' @param run numeric. 1 for the first run, 2 for the second run
-#' #' @param S_msr Logical (TRUE) indicating if S_msr shoud be included in the escapement panel.  Defaults to FALSE.
-#' #'
-#' #' @return A figure
-#' #'
-#' #' @examples
-#' #' plot_state(post, 1, TRUE)
-#' #'
-#' #' @export
-#' plot_state <- function(post_dat, run, S_msr = FALSE, firstyr = 1986){
-#'   
-#'   msy50 <- 
-#'     post_dat[["summary"]][, "50%"] %>%
-#'     as.data.frame() %>%
-#'     tibble::rownames_to_column() %>%
-#'     setNames(c("rowname", "median")) %>%
-#'     dplyr::filter(grepl(paste0("msy\\[", run, "\\]"), rowname)) %>%
-#'     dplyr::mutate(name = factor(stringr::str_sub(rowname, stringr::str_locate(rowname, ".")),
-#'                                 levels = c("S", "U"),
-#'                                 labels = c("Escapement", "Harvest Rate")))
-#'   
-#'   msr50 <- 
-#'     post_dat[["summary"]][, "50%"] %>%
-#'     as.data.frame() %>%
-#'     tibble::rownames_to_column() %>%
-#'     setNames(c("rowname", "median")) %>%
-#'     dplyr::filter(grepl(paste0("beta\\[", run, "\\]|lnalpha\\[", run, "\\]"), rowname)) %>%
-#'     dplyr::mutate(msr = ifelse(rowname == paste0("beta[", run, "]"), 1 / median, 1-1/exp(median)),
-#'                   name = factor(c("S", "U"),
-#'                                 levels = c("S", "U"),
-#'                                 labels = c("Escapement", "Harvest Rate")))
-#'   
-#' plot <-
-#'   post_dat[["summary"]][, c("2.5%", "50%", "97.5%")] %>%
-#'     as.data.frame() %>%
-#'     tibble::rownames_to_column() %>%
-#'     dplyr::rename(lcb = "2.5%", median = "50%", ucb = "97.5%") %>%
-#'     dplyr::filter(grepl(paste0("^R\\[\\d+,", run, 
-#'                                "\\]|S\\[\\d+,", run, 
-#'                                "\\]|N\\[\\d+,", run, 
-#'                                "\\]|log.resid.vec\\[\\d+,", run, 
-#'                                "\\]|mu.H\\[\\d+,", run, "\\]"), rowname)) %>%
-#'     dplyr::mutate(name = factor(gsub("(.*)\\[\\d+,\\d\\]", "\\1", rowname),
-#'                                 levels = c("S", "N", "R", "mu.H", "log.resid.vec"),
-#'                                 labels = c("Escapement", "Total Run", "Recruitment", "Harvest Rate", "Ricker Residuals")),
-#'                   index = as.numeric(gsub(".*\\[(\\d+),\\d\\]", "\\1", rowname)),
-#'                   year = (name != c("Recruitment")) * (firstyr - 1 + index) +
-#'                     (name == "Recruitment") * (firstyr - 1 - 7 + index)) %>%
-#'     dplyr::filter(year >= firstyr - 1) %>%
-#'     ggplot2::ggplot(ggplot2::aes(x = year, y = median)) +
-#'     ggplot2::geom_line() +
-#'     ggplot2::geom_point() +
-#'     ggplot2::geom_ribbon(ggplot2::aes(ymin = lcb, ymax = ucb), inherit.aes = TRUE, alpha = 0.3) +
-#'     ggplot2::facet_grid(name ~ ., scales = "free_y", switch = "y") +
-#'     ggplot2::labs(x = NULL, y = NULL) +
-#'     ggplot2::scale_x_continuous("Year", breaks = seq(1985, 2015, 3), minor_breaks = NULL)  +
-#'     ggplot2::scale_y_continuous(minor_breaks = NULL, labels = scales::comma)  +
-#'     ggplot2::geom_hline(data = msy50, ggplot2::aes(yintercept = median), color = "red", linetype = 2) +
-#'     ggplot2::geom_hline(ggplot2::aes(yintercept = 0), color = "black", linetype = 1) +
-#'     ggplot2::theme_bw() +
-#'     ggplot2::theme(strip.background = ggplot2::element_rect(colour="white", fill="white"), strip.placement = "outside")
-#'   
-#' if(S_msr == TRUE) {plot <- plot +     ggplot2::geom_hline(data = msr50, ggplot2::aes(yintercept = msr), color = "red", linetype = 5)}
-#'   
-#' plot
-#' }
-#' 
+#' State Variable Plot
+#'
+#' Produces a faceted plot of escapement, recruitment, total run, Ricker residuals and harvest rate plotted with 95% confidence envelopes.
+#'
+#' @param post_dat The SRA model jagsUI output
+#' @param run numeric. 1 for the first run, 2 for the second run
+#' @param S_msr Logical (TRUE) indicating if S_msr shoud be included in the escapement panel.  Defaults to FALSE.
+#'
+#' @return A figure
+#'
+#' @examples
+#' plot_state(post, 1, TRUE)
+#'
+#' @export
+plot_state_full <- function(post_dat, S_msr = FALSE, firstyr = 1977){
+
+  msy50 <-
+    post_dat[["summary"]][, "50%"] %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column() %>%
+    setNames(c("rowname", "median")) %>%
+    dplyr::filter(grepl(paste0("S.msy"), rowname)) %>% #"msy"
+    dplyr::mutate(name = factor(stringr::str_sub(rowname, stringr::str_locate(rowname, ".")),
+                                levels = c("S", "U"),
+                                labels = c("Escapement", "Harvest Rate")))
+
+  msr50 <-
+    post_dat[["summary"]][, "50%"] %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column() %>%
+    setNames(c("rowname", "median")) %>%
+    dplyr::filter(grepl(paste0("beta"), rowname)) %>% #|lnalpha.c
+    dplyr::mutate(msr = ifelse(rowname == paste0("beta"), 1 / median, 1-1/exp(median)),
+                  name = factor(c("S"), #, "U"
+                                levels = c("S"), #, "U"
+                                labels = c("Escapement"))) #, "Harvest Rate"
+
+plot <-
+  post_dat[["summary"]][, c("2.5%", "50%", "97.5%")] %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column() %>%
+    dplyr::rename(lcb = "2.5%", median = "50%", ucb = "97.5%") %>%
+    dplyr::filter(grepl(paste0("^R\\[\\d+\\]|S\\[\\d+\\]|N\\[\\d+\\]|log.resid.vec\\[\\d+\\]"), rowname)) %>% #|mu.H\\[\\d+\\]
+    dplyr::mutate(name = factor(gsub("(.*)\\[\\d+\\]", "\\1", rowname),
+                                levels = c("S", "N", "R", "log.resid.vec"), #"mu.H", 
+                                labels = c("Escapement", "Total Run", "Recruitment", "Ricker Residuals")), #"Harvest Rate", 
+                  index = as.numeric(gsub(".*\\[(\\d+)]", "\\1", rowname)),
+                  year = (name != c("Recruitment")) * (firstyr - 1 + index) +
+                    (name == "Recruitment") * (firstyr - 1 - 6 + index)) %>%
+    dplyr::filter(year >= firstyr - 1) %>%
+    ggplot2::ggplot(ggplot2::aes(x = year, y = median)) +
+    ggplot2::geom_line() +
+    ggplot2::geom_point() +
+    ggplot2::geom_ribbon(ggplot2::aes(ymin = lcb, ymax = ucb), inherit.aes = TRUE, alpha = 0.3) +
+    ggplot2::facet_grid(name ~ ., scales = "free_y", switch = "y") +
+    ggplot2::labs(x = NULL, y = NULL) +
+    ggplot2::scale_x_continuous("Year", breaks = seq(firstyr, 2022, 3), minor_breaks = NULL)  +
+    ggplot2::scale_y_continuous(minor_breaks = NULL, labels = scales::comma)  +
+    ggplot2::geom_hline(data = msy50, ggplot2::aes(yintercept = median), color = "red", linetype = 2) +
+    ggplot2::geom_hline(ggplot2::aes(yintercept = 0), color = "black", linetype = 1) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(strip.background = ggplot2::element_rect(colour="white", fill="white"), strip.placement = "outside")
+
+if(S_msr == TRUE) {plot <- plot +     ggplot2::geom_hline(data = msr50, ggplot2::aes(yintercept = msr), color = "red", linetype = 5)}
+
+plot
+}
+
 #' #' Plot of escapement vrs. proposed goals faceted by run
 #' #'
 #' #' Produces a faceted plot of model estimated escapement with 95% CI error bars overlain by proposed goal ranges for each run.

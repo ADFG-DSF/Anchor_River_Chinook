@@ -170,7 +170,7 @@
 #' table_params(get_summary(post))
 #'
 #' @export
-table_params <- function(post_dat, error = "CI"){
+table_params_red <- function(post_dat, error = "CI"){
   stopifnot(error %in% c("CI", "CV"))
   
   lut <- data.frame(rowname = c("lnalpha",
@@ -222,6 +222,78 @@ table_params <- function(post_dat, error = "CI"){
       dplyr::mutate(print1 = paste0(median, " (", trimws(q02.5), " - ", trimws(q97.5), ")"),
                     print2 = paste0(median, " (", trimws(cv), ")"))
     
+  if(error == "CI"){
+    table <- 
+      temp %>%
+      dplyr::select(Parameter, print1)
+    
+    colnames(table)  <- c("Parameter", "Median (95% CI)")
+  } else{
+    table <- 
+      temp %>%
+      dplyr::select(Parameter, print2)
+    
+    colnames(table)  <- c("Parameter", "Median (CV)")
+  }
+  
+  knitr::kable(table, align = "r", escape = FALSE)
+}
+
+table_params_full <- function(post_dat, error = "CI"){
+  stopifnot(error %in% c("CI", "CV"))
+  
+  lut <- data.frame(rowname = c("lnalpha",
+                                "alpha",
+                                "beta",
+                                "phi",
+                                "sigma.white",
+                                "S.max",
+                                "S.eq",
+                                "S.msy",
+                                "U.msy",
+                                "D.sum",
+                                "pi[1]",
+                                "pi[2]",
+                                "pi[3]",
+                                "pi[4]",
+                                "q.ASearly",
+                                "q.ASlate"),
+                    Parameter = factor(
+                      c("ln($\\alpha$)",
+                        "$\\alpha$",
+                        "$\\beta$",
+                        "$\\phi$",
+                        "$\\sigma_{w}$",
+                        "$S_{MSR}$",
+                        "$S_{EQ}$",
+                        "$S_{MSY}$",
+                        "$U_{MSY}$",
+                        "D",
+                        "$\\pi_{1}$",
+                        "$\\pi_{2}$",
+                        "$\\pi_{3}$",
+                        "$\\pi_{4}$",
+                        "$q_{survey77-88}$",
+                        "$q_{survey89-07}$"),
+                      levels = c("ln($\\alpha$)", "$\\alpha$", "$\\beta$", "$\\phi$", "$\\sigma_{w}$",
+                                 "$S_{MSR}$", "$S_{EQ}$", "$S_{MSY}$", "$U_{MSY}$",
+                                 "D", "$\\pi_{1}$", "$\\pi_{2}$", "$\\pi_{3}$", "$\\pi_{4}$",
+                                 "$q_{survey77-88}$", "$q_{survey89-07}$")),
+                    stringsAsFactors = FALSE)
+  
+  temp <-
+    post_dat[["summary"]][, c("50%", "sd", "2.5%", "97.5%")]  %>% 
+    as.data.frame() %>%
+    tibble::rownames_to_column() %>%
+    dplyr::right_join(lut, by = "rowname") %>%
+    dplyr::rename(median = "50%", q02.5 = "2.5%", q97.5 = "97.5%") %>%
+    dplyr::mutate(cv = ifelse(grepl("^S.", rowname),
+                              sqrt(exp(((log(q97.5)-log(abs(q02.5)))/1.645/2)^2)-1), #Geometric CV for lognormals, abs(q02.5) to suppresses NaN warning on phi
+                              sd / abs(median))) %>%
+    dplyr::mutate_at(c("median", "q02.5", "q97.5", "cv"), digits) %>%
+    dplyr::mutate(print1 = paste0(median, " (", trimws(q02.5), " - ", trimws(q97.5), ")"),
+                  print2 = paste0(median, " (", trimws(cv), ")"))
+  
   if(error == "CI"){
     table <- 
       temp %>%

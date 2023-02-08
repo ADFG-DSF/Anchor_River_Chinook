@@ -187,35 +187,5 @@
       tau.log.S[y] <- 1 / S.cv[y] / S.cv[y]
       }
 
-      # # GENERATE FITTED VALUES OF R EVERY S.byinc SPAWNING FISH FOR GRAPHICS;
-      # for (i in 1:S.ninc) {
-      # S.star.1[i] <- S.byinc*i
-      # R.fit[i] <- S.star.1[i] * exp(lnalpha - beta * S.star.1[i])
-      # }
-      # 
-      # # CALCULATE SUSTAINED YIELD AT REGULAR INTERVALS OF S;
-      # # FIND THE PROBABILITY THAT EACH VALUE OF S WILL RESULT IN YIELDS WITHIN 10, 20, & 30 OF MSY;
-      # # FIND THE PROBABILITY OF NOT CONDUCTING RECRUITMENT OVERFISHING AT EACH S;
-      # R.msy <- S.msy * exp(lnalpha - beta * S.msy)*exp(sigma.red*sigma.red/2)
-      # MSY <- R.msy - S.msy
-      # for (i in 1:S.ninc)  {
-      # S.star.2[i] <- S.byinc*i
-      # R.fit2[i] <- S.star.2[i] * exp(lnalpha - beta * S.star.2[i])*exp(sigma.red*sigma.red/2)
-      # SY[i] <- R.fit2[i] - S.star.2[i]
-      # I90[i] <- step(SY[i] - 0.9 * MSY)
-      # I80[i] <- step(SY[i] - 0.8 * MSY)
-      # I70[i] <- step(SY[i] - 0.7 * MSY)
-      # #OF90[i] <- 1 - nOF90[i]
-      # #OF80[i] <- 1 - nOF80[i]
-      # #OF70[i] <- 1 - nOF70[i]
-      # }
-      # #nOF90[1] <- 0
-      # #nOF80[1] <- 0
-      # #nOF70[1] <- 0
-      # #for (i in 2:120) {
-      # #nOF90[i] <- max(I90[i],nOF90[i-1])
-      # #nOF80[i] <- max(I80[i],nOF80[i-1])
-      # #nOF70[i] <- max(I70[i],nOF70[i-1])
-      #}
-      }
+    }
       
