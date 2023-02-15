@@ -460,7 +460,7 @@ plot_horse_full <- function(post_dat, firstyr = 1977){
                   name = ifelse(name0 == "Spre", "S", name0),
                   index = as.numeric(gsub(".*\\[(\\d+)]", "\\1", rowname)), #rename from index0 to index
                   #index = ifelse(name0 == "S", index0 + 6, index0),
-                  year = (name != "R") * (firstyr - 1 + index) + (name == "R") * (firstyr - 1 - 7 + index)) #this line changes
+                  year = (name != "R") * (firstyr - 1 + index) + (name == "R") * (firstyr - 1 - 6 + index)) #this line changes
   
   v_dat <-  temp %>% dplyr::filter(name == "R") %>% dplyr::select(vlb = lb, vub = ub, year)
   h_dat <-  temp %>% dplyr::filter(name == "S") %>% dplyr::select(hlb = lb, hub = ub, year)

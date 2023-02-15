@@ -431,8 +431,8 @@ post_red <- jags(data = datanc_red,
 
 
 post_red
-saveRDS(post_red, ".\\output\\post_2003on")
-
+#saveRDS(post_red, ".\\output\\post_2003on")
+post_red <- readRDS(".\\output\\post_2003on")
 #   * Plots ---------------------------------------------------------------
 
 traceplot(post_red, c("S.msy", "S.eq", "lnalpha", "lnalpha.c", "beta", "sigma.white", "phi", "D"))
@@ -914,6 +914,7 @@ post_full <- jags(data = dat_full,
 )
 
 #saveRDS(post_full, ".\\output\\post_1977on")
+post_full <- readRDS(".\\output\\post_1977on")
 
 traceplot(post_full, c("S.msy", "S.eq", "lnalpha", "lnalpha.c", "beta", "sigma.white", "phi", "D"))
 post_full$sims.list[c("S.msy", "S.eq", "lnalpha", "lnalpha.c", "beta", "sigma.white", "phi", "q.ASearly", "q.ASlate")] %>% 
@@ -930,4 +931,8 @@ plot_state_full(post_full)
 plot_horse_full(post_full)
 table_params_full(post_full)
 profile_full <- get_profile(post_full)
+library(xlsx)
+write.xlsx(profile_full, ".\\output\\profile_2022.xlsx")
 plot_profile(profile_full, goal_range = c(3800, 7600))
+
+

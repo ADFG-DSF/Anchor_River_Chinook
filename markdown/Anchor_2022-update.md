@@ -7,32 +7,31 @@ output:
 ---
 
 
-Logan and I updated the Anchor River escapement goal analysis to use data through the 2022 season. Two models were considered. One model is an update of the analysis David put forth after the 2016 season while the second model was an update of the or analysis used to to create FDS07-05. The 2016 analysis truncated the SR data set to include on those years where we had the highest quality data while the analysis from FDS07-05 used all of the available data. Herein we present the results for the model using all available data although the results from the two models were similar. 
+Logan and I updated the Anchor River escapement goal analysis using data through the 2022 season. Two models were considered. One model is an update of the analysis used to update the goal after the 2016 season while the second model was an update of the analysis used to to create FDS07-05. The 2016 analysis truncated the SR data set to include only those years where we had the highest quality data while the analysis from FDS07-05 used all of the available data. Herein we present the results for the model using all available data although the results from the two models were similar. 
   
-  
-  
-<div class="figure" style="text-align: center">
-<img src="Anchor_2022-update_files/figure-html/unnamed-chunk-1-1.png" alt="Figure 1. - Estimates of  Return, Run, Escapement, and ricker residuals for Anchor River Chinook Salmon, 1977-2022"  />
-<p class="caption">Figure 1. - Estimates of  Return, Run, Escapement, and ricker residuals for Anchor River Chinook Salmon, 1977-2022</p>
-</div>
-  
-The precision associated with estimates of escapement improve markedly after the sonar/weir was installed although this period also coincides with mostly negative Ricker residuals. This patterns of our best assessments failing to capture high productivity regimes occurs in most of our Chinook SR data sets and is the reason I prefer to use all available data wherever possible. 
+The precision associated with estimates of escapement improve markedly after the sonar/weir was installed although this period also coincides with mostly negative Ricker residuals. This patterns of our best assessments failing to capture high productivity regimes occurs in most of our Chinook SR data sets and is the reason I prefer to use all available data wherever possible.  
   
 <div class="figure" style="text-align: center">
-<img src="Anchor_2022-update_files/figure-html/unnamed-chunk-2-1.png" alt="Figure 2. - Ricker curve for Anchor River Chinook salmon, 1977-2022"  />
-<p class="caption">Figure 2. - Ricker curve for Anchor River Chinook salmon, 1977-2022</p>
+<img src="Anchor_2022-update_files/figure-html/unnamed-chunk-1-1.png" alt="Figure 1. - Estimates of  return, total tun, escapement, and Ricker residuals for Anchor River chinook salmon, 1977-2022"  />
+<p class="caption">Figure 1. - Estimates of  return, total tun, escapement, and Ricker residuals for Anchor River chinook salmon, 1977-2022</p>
 </div>
   
-We have SR information at a wide range of escapements.  
+We have SR information at a wide range of escapements.
   
 <div class="figure" style="text-align: center">
-<img src="Anchor_2022-update_files/figure-html/unnamed-chunk-3-1.png" alt="Figure 3. - Optimal Yield Probability profile for Anchor River Chinook salmon, 1977-2022"  />
-<p class="caption">Figure 3. - Optimal Yield Probability profile for Anchor River Chinook salmon, 1977-2022</p>
+<img src="Anchor_2022-update_files/figure-html/unnamed-chunk-2-1.png" alt="Figure 2. - Ricker curve for Anchor River chinook salmon, 1977-2022"  />
+<p class="caption">Figure 2. - Ricker curve for Anchor River chinook salmon, 1977-2022</p>
 </div>
   
-The existing goals are among the most conservative Chinook salmon goals in the state. Given the current parameters estimates that goal is set around the same criteria used in the 2010 escapement goal review (lower bound at $S_{msy}$ and upper bound at $S_{max)}).
+The existing goals are among the most conservative Chinook salmon goals in the state. Given the current parameters estimates that goal is set around the same criteria used in the 2010 escapement goal review (lower bound at $S_{msy}$ and upper bound at $S_{max}$) although it is more conservative than the 2016 goal revision.
   
-Table 1.- Parameter estimates for Anchor River Chinook salmon SR analysis, 1977-2022
+<div class="figure" style="text-align: center">
+<img src="Anchor_2022-update_files/figure-html/unnamed-chunk-3-1.png" alt="Figure 3. - Optimal Yield Probability profile for Anchor River chinook salmon, 1977-2022"  />
+<p class="caption">Figure 3. - Optimal Yield Probability profile for Anchor River chinook salmon, 1977-2022</p>
+</div>
+  
+  
+Table 1.- Parameter estimates for Anchor River chinook salmon SR analysis, 1977-2022
 
 |         Parameter|                Median (95% CI)|
 |-----------------:|------------------------------:|
