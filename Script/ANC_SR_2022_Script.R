@@ -450,7 +450,7 @@ plot_profile(profile_red, goal_range = c(3800, 7600))
 # Full Data analysis ------------------------------------------------------
 
 upyear_full=22
-mod_full=c("FULL_1-39","OUT_YEARS_1-39");YRIND=1:46
+mod_full=c("FULL_1-46","OUT_YEARS_1-46");YRIND=1:46
 projname_full=paste("ANC_CHIN_BASSR_JAGS_UPDATE_",upyear_full,mod_full[1],sep="") # Core name of BUGS model.
 
 
