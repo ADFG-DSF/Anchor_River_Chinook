@@ -2,5 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-/output/plots/
 *.xlsx
+/.quarto/

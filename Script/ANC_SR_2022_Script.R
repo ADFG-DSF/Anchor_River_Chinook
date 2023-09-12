@@ -1,10 +1,20 @@
-#2/3/2023 - Adam Reimer. Updated some of the priors to aid model fit. Ran full data model.
-#12/8/2022 - Logan Wendling - Copied most of the previous 2019 code and updated best I could
-# Uses data up to and including 2022.
-# N.B. HUNT FOR "SPECIFIC" in the code when updating
+# Anchora RIver CHinook salmon Run reconsruction/ Stock Recruit analysis
 
+# Author: Adam Reimer / Logan Wendling
+# Version: 2023-09-11
 
-#read in dat_chinBEG for profile comparisons
+# Packages
+packs <- c("tidyverse", "jagsUI")
+lapply(packs, require, character.only = TRUE)
+  
+# Notes
+# 2/3/2023 - Adam Reimer - Updated some of the priors to aid model fit. Ran full data model.
+# 12/8/2022 - Logan Wendling - Copied most of the previous 2019 code and updated best I could. Uses data up to and including 2022.
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+# Read data ---------------------------------------------------------------
+# read in dat_chinBEG for profile comparisons
 data_names <- list.files(path=".\\data")
 lapply(data_names, function(x) load(paste0(".\\data\\", x), .GlobalEnv))
 
@@ -12,28 +22,19 @@ lapply(data_names, function(x) load(paste0(".\\data\\", x), .GlobalEnv))
 function_files <- list.files(path=".\\functions\\")
 lapply(function_files, function(x) source(paste0(".\\functions\\", x)))
 
-library(tidyverse)
-library(jagsUI)
+
 
 # Reduced model analysis --------------------------------------------------
-# CHOSEN MODEL =RED_21-46AR. SEE "Schem21-43R" sheet in ANC_CHIN_BASSR_JAGS_RED_21-43AR_RESULTS.xlsx workbook for schematics
-# RED_21-43R = YEARS 27-46 with first 6 aerial surveys prior to 2003 used for the R[y] w/out direct spawning abund link PLUS AR(1) component in first 6 R[y]
+# Model used during the 2019 escapement goal update (RED_21-46AR). 
+# RED_21-46R = YEARS 27-46 with first 6 aerial surveys prior to 2003 used for the R[y] w/out direct spawning abund link PLUS AR(1) component in first 6 R[y]
 
-upyear_red=22      # SPECIFIC
-mod_red=c("_RED_21-46AR","OUT_YEARS_21-46AR")   # Chosen model; SPECIFIC model name (43)
+upyear_red=22
+mod_red=c("_RED_21-46AR","OUT_YEARS_21-46AR")   # Chosen model;
 projname_red=paste("ANC_CHIN_BASSR_JAGS_UPDATE_",upyear_red,mod_red[1],sep="") # Core name of BUGS model text and Excel results files.
 
-
-
-#   * Data ---------------------------------------------------------------
-
-
-# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-# XXXXXXXXXXXXXXXXXXXXXX  DATA  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+#   * Jags Data ---------------------------------------------------------------
 if(T){
   # N.B. need byrow=TRUE for matrices
-  # dat0-data that is relevant to the  RED_21-43AR model.  See previous versions (ANC_BASSR_JAGS_MOD_2_4_16.r) for data ever used in any of the models considered during model selection
   datanc_red=list(
     T=20,
     A=4,
@@ -82,32 +83,28 @@ if(T){
     E=c(12,15,15,15,15,20,8,12,15,9,12,12,13,20, 20,8,9,7,8,1.0E-3)     #  2/7/2023 Holly double checked
   )
   datanc_red$n.tot=rowSums(datanc_red$x) # Calculates sample size
-} # DATA  ; SPECIFIC: numbers
+} # DATA  ;
 
 
 
 #   * Model ---------------------------------------------------------------
-
-# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-# XXXXXXXXXXXXXXXXXXXXXX  MODEL DEFINITION --AND WRITE MODEL TO DIR XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 if(T){
   cat("
     model {
 
 # Spawner Recruit analysis for Anchor River Chinook salmon.
-# YEARS 21-43 with first 6 aerial surveys prior to 2003 used for the R[y] w/out direct spawning abund link PLUS AR(1) component in first 6 R[y]
+# YEARS 21-46 with first 6 aerial surveys prior to 2003 used for the R[y] w/out direct spawning abund link PLUS AR(1) component in first 6 R[y]
 
-#T=20 calendar years for which we have weir escapement and possibly age data-2003-2019
-#A=4 return ages (3, 4, 5, 6) (Total age===> 1.1. 1.2,1.3 and 1.4)
-#Data matrix is a T=17 By A=4 structure.
+#T=20 calendar years for which we have weir escapement and possibly age data-2003-2022
+#A=4 return ages (3, 4, 5, 6) (Total age===> 1.1, 1.2,1.3 and 1.4)
+#Data matrix is a T=20 By A=4 structure.
 #BY Returns w/Ricker S-R Link with AR1 Errors
 #R[y] = Total Return from BY y
-#T+A-1 =20+4-1=23 BYs Represented in the age Data (=(T-a.min)+A+(a.min-1) ); BYS= 1997 (=2003-6) - 2016 (=2022-3)
+#T+A-1 =20+4-1=23 BYs Represented in the age Data (=(T-a.min)+A+(a.min-1) ); BYS=1997-2019
 #Oldest Age of Returning Fish     =6=a.max;
 #Youngest Age of Returnung Fish=3=a.min.
-#We DO NOT Have Spawning Abundances for the First A+a.min -1 = 4+3-1   = 6  => 1-6  BYs   (BYs 1997-2002)
-#We DO        Have  Spawning Abundances for the Remaining T-a.min =17-3= 14 => 7-23 BYs   (BYs 2003-2019)
+#We DO NOT Have Spawning Abundances for the first A+a.min-1 = 4+3-1 = 6 => 1-6  BYs   (BYs 1997-2002)
+#We DO     Have  Spawning Abundances for the Remaining T-a.min =20-3= 17 => 7-23 BYs   (BYs 2003-2019)
 #                                              T      = 20
 #                                              a.min  =  3
 #                                              a.max  =  6
@@ -284,10 +281,10 @@ if(T){
     }
       ", file=paste(projname_red,"_MODEL.jag",sep=""))
   
-} # MODEL SPECIFICATION : .jag; SPECIFIC updates in annotations here
+} # MODEL SPECIFICATION :
 
 
-# Chain params ------------------------------------------------------------
+#   * Chain params ------------------------------------------------------------
 #specify chains here because of the way ewe are doing intis. Better to write a function which automatically generates inits
 nchains <- 3
 nb <- 50000
@@ -377,7 +374,7 @@ if(T){
       lapply(ini1_red[corrnode],function(y,corrnode){z=y+runif(1,-0.1,0.1)*y;z[z>=0.999]=0.99;z[z<=-0.999]=-0.99; return(z)}))
     inianc_red=list(ini1_red,ini2_red,ini3_red)}
   
-}  # INITS: nchains chains ; SPECIFIC:numbers
+}  # INITS: nchains chains ;
 
 
 
@@ -417,23 +414,24 @@ codavec_red=c("S.msy",
     )
 
 post_red <- jags(data = datanc_red,
-             parameters.to.save = codavec_red,
-             inits = inianc_red,
-             model.file = paste(projname_red,"_MODEL.jag",sep=""),
-             n.chains = nchains,
-             n.iter = ns,
-             n.burnin = nb,
-             n.thin = nt,
-             parallel = TRUE,
-             store.data = TRUE,
-             codaOnly = c("mu")
+                 parameters.to.save = codavec_red,
+                 inits = inianc_red,
+                 model.file = paste(projname_red,"_MODEL.jag",sep=""),
+                 n.chains = nchains,
+                 n.iter = ns,
+                 n.burnin = nb,
+                 n.thin = nt,
+                 parallel = TRUE,
+                 store.data = TRUE,
+                 codaOnly = c("mu")
 )
 
 
 post_red
 #saveRDS(post_red, ".\\output\\post_2003on")
 post_red <- readRDS(".\\output\\post_2003on")
-#   * Plots ---------------------------------------------------------------
+
+#   * Results ---------------------------------------------------------------
 
 traceplot(post_red, c("S.msy", "S.eq", "lnalpha", "lnalpha.c", "beta", "sigma.white", "phi", "D"))
 post_red$sims.list[c("S.msy", "S.eq", "lnalpha", "lnalpha.c", "beta", "sigma.white", "phi")] %>% 
@@ -443,13 +441,10 @@ post_red$sims.list[c("S.msy", "S.eq", "lnalpha", "lnalpha.c", "beta", "sigma.whi
     geom_histogram() +
     facet_wrap(stat ~ ., scales = "free_x")
 
-
 plot_horse_red(post_red)
 table_params_red(post_red)
 profile_red <- get_profile(post_red)
 plot_profile(profile_red, goal_range = c(3800, 7600))
-
-
 
 
 # Full Data analysis ------------------------------------------------------
@@ -460,11 +455,7 @@ projname_full=paste("ANC_CHIN_BASSR_JAGS_UPDATE_",upyear_full,mod_full[1],sep=""
 
 
 #   * Data ----------------------------------------------------------------
-
-# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-# XXXXXXXXXXXXXXXXXXXXXX  DATA  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-  if(T){dat_full=list(
+if(T){dat_full=list(
     T=46,
     Air.Stop=32,
     A=4,
@@ -545,12 +536,6 @@ projname_full=paste("ANC_CHIN_BASSR_JAGS_UPDATE_",upyear_full,mod_full[1],sep=""
 
 
 #   * Model ---------------------------------------------------------------
-
-
-# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-# XXXXXXXXXXXXXXXXXXXXXX  MODEL DEFINITION --AND WRITE MODEL TO DIR XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
 cat("
   model {
 
@@ -730,13 +715,6 @@ log.R.mean2[A+a.min] <- log.R.mean1[A+a.min] + phi * log.resid.0
 
 
 #   * Inits ---------------------------------------------------------------
-
-
-
-
-# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-# XXXXXXXXXXXXXXXXXXXXXX  INITS - for nchains chains XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 if(T){
   
   if(T){ini0_full=list(
@@ -916,6 +894,9 @@ post_full <- jags(data = dat_full,
 #saveRDS(post_full, ".\\output\\post_1977on")
 post_full <- readRDS(".\\output\\post_1977on")
 
+
+#   *  Results ---------------------------------------------------
+get_Rhat(post_full, 1.1)
 traceplot(post_full, c("S.msy", "S.eq", "lnalpha", "lnalpha.c", "beta", "sigma.white", "phi", "D"))
 post_full$sims.list[c("S.msy", "S.eq", "lnalpha", "lnalpha.c", "beta", "sigma.white", "phi", "q.ASearly", "q.ASlate")] %>% 
   as.data.frame() %>%
@@ -923,9 +904,6 @@ post_full$sims.list[c("S.msy", "S.eq", "lnalpha", "lnalpha.c", "beta", "sigma.wh
   ggplot(aes(x = value)) +
   geom_histogram() +
   facet_wrap(stat ~ ., scales = "free_x")
-
-#   *  Plots --------------------------------------------------------------
-
 
 plot_state_full(post_full)
 plot_horse_full(post_full)

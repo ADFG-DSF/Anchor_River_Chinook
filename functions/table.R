@@ -1,4 +1,6 @@
-#' #' Total Run by age table
+
+# Total Run by Age --------------------------------------------------------
+
 #' #'
 #' #' Produces a table of total run by age along with cv's.
 #' #'
@@ -52,7 +54,11 @@
 #' }
 #' #dplyr::funs(if(node == "p") {1985 - 7 + .} else(1985 + .))
 #' 
-#' 
+
+
+# Brood Table -------------------------------------------------------------
+
+ 
 #' #' Brood table
 #' #'
 #' #' Produces an brood tables based on the posterior means form the state space model.  Most of the table functions in this package are intended
@@ -93,10 +99,13 @@
 #'     dplyr::mutate_all(as.integer) %>%
 #'     print(n = 50)
 #' }
-#' 
+
+# Index of abundance table ------------------------------------------------
+
+
 #' #' Abundance information for early run
 #' #'
-#' #' Produces a table of indices of abundance for the Kenai River late run.
+#' #' Produces a table of indices of abundance for the Kenai River early run.
 #' #'
 #' #' @param dat_erinput
 #' #'
@@ -129,33 +138,8 @@
 #' #formatting moved prior to pixiedust so that numbers are passes as characters with desired format.  markdown looses format choice somehow
 #' #format each column individually for better readability
 #' 
-#' #' Abundance information for late run
-#' #'
-#' #' Produces a table of indices of abundance for the Kenai River late run.
-#' #'
-#' #' @param dat_input THe late run data input file
-#' #'
-#' #' @return A table
-#' #'
-#' #' @examples
-#' #' table_index(dat_lrinput)
-#' #'
-#' #' @export
-#' table_lrindex <- function(dat_input){
-#'   dat_input %>%
-#'     dplyr::mutate(Year = 1986:2015,
-#'                   didson = paste0(format(round(DLge75, 0), big.mark = ","), " (", round(cv.DS, 3), ")"),
-#'                   aris = paste0(format(round(ALge75, 0), big.mark = ","), " (", round(cv.AR, 3), ")"),
-#'                   ir = paste0(format(round(IR.hat, 0), big.mark = ","), " (", round(cv.IR, 2), ")")) %>%
-#'     dplyr::select(Year, NCPUE = ncpue, NASB = nasb, SCPUE = scpue, CCPUE = ccpue, didson, aris, ir) %>%
-#'     pixiedust::dust() %>%
-#'     pixiedust::sprinkle_colnames(didson = "DIDSON (CV)", aris = "${\\text{ARIS (CV)}^a}$", ir = "${\\text{CR (CV)}^a}$") %>%
-#'     pixiedust::sprinkle(fn = quote(KenaiSRA:::nareplace(value))) %>%
-#'     pixiedust::sprinkle(cols = 5, fn = quote(KenaiSRA:::digits(value)))
-#' }
-#' #needs tto be updated to creaate appb...
-#' #formatting moved prior to pixiedust so that numbers are passes as characters with desired format.  markdown looses format choice somehow
-#' #format each column individually for better readability
+
+# SR parameter estimates (reduced model) --------------------------------------------------
 
 #' Table of SR analysis paramerater estimates
 #'
@@ -239,6 +223,8 @@ table_params_red <- function(post_dat, error = "CI"){
   knitr::kable(table, align = "r", escape = FALSE)
 }
 
+# SR parameter estimates (full model) -------------------------------------
+
 table_params_full <- function(post_dat, error = "CI"){
   stopifnot(error %in% c("CI", "CV"))
   
@@ -311,6 +297,9 @@ table_params_full <- function(post_dat, error = "CI"){
   knitr::kable(table, align = "r", escape = FALSE)
 }
 
+# State Variables ---------------------------------------------------------
+
+
 #' #' State Variable Table
 #' #'
 #' #' Produces a table of escapement, recruitment, total run, and inriver run along with cv's.
@@ -346,62 +335,4 @@ table_params_full <- function(post_dat, error = "CI"){
 #'   colnames(temp)  <- c(year = "Year", N = "Total Run (CV)", Inriver.Run = "Inriver Run (CV)", S = "Escapement (CV)", R = "Recruitment (CV)")
 #'   
 #'   knitr::kable(temp, align = "r", escape = FALSE)
-#' }
-#' 
-#' #' A table comparing model posterior and GSI estimates of stock composition
-#' #'
-#' #' Creates a table comparing stock composition estimated during late June from both the model posterior and GSI estimates (FDS 13-64 Appendix B1).
-#' #'
-#' #' @param post The posterior object.
-#' #'
-#' #' @return A table
-#' #'
-#' #' @examples
-#' #' table_stockcomp(post)
-#' #'
-#' #' @export
-#' table_stockcomp <- function(post, week = c("Jun17to23", "Jun24to30")){
-#'   stopifnot(week %in% c("Jun17to23", "Jun24to30"),
-#'             is.element("KenaiSRA", installed.packages()[,1]),
-#'             exists(data(dat_gsi, package = "KenaiSRA")),
-#'             exists("year_id", .GlobalEnv))
-#'   
-#'   temp <-
-#'     dplyr::bind_rows(post$summary[grep("gsi5\\[", rownames(post$summary)), ] %>%
-#'                        as.data.frame() %>%
-#'                        tibble::rownames_to_column(),
-#'                      post$summary[grep("gsi6\\[", rownames(post$summary)), ] %>%
-#'                        as.data.frame() %>%
-#'                        tibble::rownames_to_column()) %>%
-#'     dplyr::mutate(var = gsub("(gsi\\d{1}).*", "\\1",  rowname),
-#'                   year = names(year_id[as.numeric(gsub(".*\\[(\\d{1,2}).*", "\\1",  rowname))])) %>%
-#'     dplyr::select(var, year, post_mean = mean, post_sd = sd) %>%
-#'     dplyr::left_join(dat_gsi, by = c("var", "year")) %>%
-#'     dplyr::mutate(z = (post_mean - gsi_mean) / sqrt(post_sd^2 + gsi_sd^2),
-#'                   pval = 2 * pnorm(-abs(z)),
-#'                   code = symnum(pval, corr = FALSE, na = FALSE, cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1), symbols = c("***", "**", "*", ".", " ")),
-#'                   post = paste0(format(round(post_mean, 2), nsmall = 2)," (", format(round(post_sd, 2), nsmall = 2), ")"),
-#'                   gsi = paste0(format(round(gsi_mean, 2), nsmall = 2)," (", format(round(gsi_sd, 2), nsmall = 2), ")")) %>%
-#'     dplyr::select(year, week, post, gsi, z, pval, code) %>%
-#'     dplyr::arrange(year, week)
-#'   
-#'   knitr::kable(temp[temp$week %in% week, ],
-#'                digits = 2,
-#'                row.names = FALSE,
-#'                col.names = c("year", "week", "Posterior mean (SE)", "GSI mean (SE)", "z", "p-value", "sig."),
-#'                caption = paste0("Estimates of mainstem contribution to ncpue index in comparision to GSI based estimates for ", week),
-#'                align = "r")
-#'   
-#'   # list(
-#'   #   "Jun17to23" = knitr::kable(temp[temp$week == "Jun17to23", ],
-#'   #                               digits = 2,
-#'   #                               row.names = FALSE,
-#'   #                               col.names = c("year", "week", "Posterior mean (SE)", "GSI mean (SE)", "z", "p-value", "sig."),
-#'   #                               caption = "Comparison of posterior stock composition estimates with GSI based estimates.",
-#'   #                               align = "r"),
-#'   #   "Jun24to30" = knitr::kable(temp[temp$week == "Jun24to30", ],
-#'   #                               digits = 2,
-#'   #                               row.names = FALSE,
-#'   #                               col.names = c("year", "week", "Posterior mean (SE)", "GSI mean (SE)", "z", "p-value", "sig."),
-#'   #                               align = "r"))
 #' }

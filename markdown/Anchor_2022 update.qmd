@@ -22,7 +22,7 @@ lapply(data_names, function(x) load(paste0("..\\data\\", x), .GlobalEnv))
 
 post <- readRDS("..\\output\\post_1977on")
 ```
-Logan and I updated the Anchor River escapement goal analysis using data through the 2022 season. Two models were considered. One model is an update of the analysis used to update the goal after the 2016 season while the second model was an update of the analysis used to to create FDS07-05. The 2016 analysis truncated the SR data set to include only those years where we had the highest quality data while the analysis from FDS07-05 used all of the available data. Herein we present the results for the model using all available data although the results from the two models were similar. 
+Logan and I updated the Anchor River escapement goal analysis using data through the 2022 season. Two models were considered. One model is an update of the analysis used to update the goal after the 2016 season while the second model was an update of the analysis used to to create FMS07-05. The 2016 analysis truncated the SR data set to include only those years where we had the highest quality data while the analysis from FMS07-05 used all of the available data. Herein we present the results for the model using all available data although the results from the two models were similar. 
   
 The precision associated with estimates of escapement improve markedly after the sonar/weir was installed although this period also coincides with mostly negative Ricker residuals. This patterns of our best assessments failing to capture high productivity regimes occurs in most of our Chinook SR data sets and is the reason I prefer to use all available data wherever possible.  
   
@@ -44,7 +44,7 @@ plot_profile(profile_full, goal_range = c(3800, 7600))
 ```
   
   
-Table 1.- Parameter estimates for Anchor River chinook salmon SR analysis, 1977-2022
+Table 1.- Parameter estimates for Anchor River Chinook salmon SR analysis, 1977-2022
 ```{r}
 table_params_full(post)
 ```
