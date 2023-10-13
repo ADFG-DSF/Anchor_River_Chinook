@@ -5,3 +5,4 @@
 *.xlsx
 /.quarto/
 /output
+/docs/markdown/*.docx

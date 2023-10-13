@@ -187,10 +187,10 @@ table_params_red <- function(post_dat, error = "CI"){
                                   "$\\pi_{2}$",
                                   "$\\pi_{3}$",
                                   "$\\pi_{4}$",
-                                  "$q_{survey}$"),
+                                  "$\\lambda_{survey}$"),
                                   levels = c("ln($\\alpha$)", "$\\alpha$", "$\\beta$", "$\\phi$", "$\\sigma_{w}$",
                                              "$S_{MSR}$", "$S_{EQ}$", "$S_{MSY}$", "$U_{MSY}$",
-                                             "D", "$\\pi_{1}$", "$\\pi_{2}$", "$\\pi_{3}$", "$\\pi_{4}$", "$q_{survey}$")),
+                                             "D", "$\\pi_{1}$", "$\\pi_{2}$", "$\\pi_{3}$", "$\\pi_{4}$", "$\\lambda_{survey}$")),
                     stringsAsFactors = FALSE)
   
   temp <-
@@ -225,8 +225,9 @@ table_params_red <- function(post_dat, error = "CI"){
 
 # SR parameter estimates (full model) -------------------------------------
 
-table_params_full <- function(post_dat, error = "CI"){
+table_params_full <- function(post_dat, error = "CI", output = "kable"){
   stopifnot(error %in% c("CI", "CV"))
+  stopifnot(output %in% c("df", "kable"))
   
   lut <- data.frame(rowname = c("lnalpha",
                                 "alpha",
@@ -259,12 +260,12 @@ table_params_full <- function(post_dat, error = "CI"){
                         "$\\pi_{2}$",
                         "$\\pi_{3}$",
                         "$\\pi_{4}$",
-                        "$q_{survey77-88}$",
-                        "$q_{survey89-07}$"),
+                        "$\\lambda_{survey77-88}$",
+                        "$\\lambda_{survey89-07}$"),
                       levels = c("ln($\\alpha$)", "$\\alpha$", "$\\beta$", "$\\phi$", "$\\sigma_{w}$",
                                  "$S_{MSR}$", "$S_{EQ}$", "$S_{MSY}$", "$U_{MSY}$",
                                  "D", "$\\pi_{1}$", "$\\pi_{2}$", "$\\pi_{3}$", "$\\pi_{4}$",
-                                 "$q_{survey77-88}$", "$q_{survey89-07}$")),
+                                 "$\\lambda_{survey77-88}$", "$\\lambda_{survey89-07}$")),
                     stringsAsFactors = FALSE)
   
   temp <-
@@ -294,7 +295,7 @@ table_params_full <- function(post_dat, error = "CI"){
     colnames(table)  <- c("Parameter", "Median (CV)")
   }
   
-  knitr::kable(table, align = "r", escape = FALSE)
+  if(output == "df"){temp} else{knitr::kable(table, align = "r", escape = FALSE)}
 }
 
 # State Variables ---------------------------------------------------------

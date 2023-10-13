@@ -1,0 +1,93 @@
+---
+title: "2023_EGreport_output"
+format: docx
+editor: visual
+---
+
+```{r}
+#| echo: false 
+#| output: false
+#| message: false 
+#| warning: false
+
+# This markdown creates the Anchor River specif additions to the 2023 LCI EG report. Since this content is just a small part of the total report I included 
+# the headers from the full report so that Ted will know what sections were modified. This code incorporates "OYP_plotUpdate.R" which Logan made. Thus,  
+# "OYP_plotUpdate.R" was deleted with the first commit which contained this file. Note that this outputs to ./docs/markdown as directed by the _quarto.yml
+# (so that the update can post to github pages).
+
+#### Import data and Function ####
+packs <- c("tidyverse")
+lapply(packs, require, character.only = TRUE)
+
+#source functions
+function_files <- list.files(path="..\\functions")
+lapply(function_files, function(x) source(paste0("..\\functions\\", x)))
+
+#load datasets
+data_names <- list.files(path="..\\data")
+lapply(data_names, function(x) load(paste0("..\\data\\", x), .GlobalEnv))
+
+post <- readRDS("..\\output\\post_1977on") #OUTPUT is currently located in S:\RTS\Reimer\Anchor_River_Chinook
+```
+
+# Overview of Stock Assessment Methods
+
+## Escapement Goal Determination
+
+### Spawner-Recruit Analysis (SRA)
+
+### Anchor River Chinook
+
+The Anchor River escapement goal analysis was updated using data through 2022. This included aerial survey data from 1977 through 2008, escapements from 2003 through 2022, age composition data, SWHS inriver harvest estimates through 2022, and assumed marine harvest rates. The Bayesian full-probability model (BFPM) used was an update of the SRA from Szarzi et al. (2007) and included all available spawner-recruit data for this stock. The model from Otis et al. (2016a) was not used as it truncated the data set to include only the most recent years, where we had the highest quality data, while omitting data from a higher productivity period for this stock. The data, code, and results of this analysis can be viewed at https://github.com/ADFG-DSF/Anchor_River_Chinook.
+
+# Stock Specific Methods, Results, and Recommendations
+
+## Chinook Salmon
+
+### Anchor River
+
+In 2023, the BFPM of Szarzi et al. 2007 was updated using aerial survey data from 1977 through 2008, available escapements from 2003 through 2022, age composition data, SWHS inriver harvest estimates through 2022, and assumed marine harvest rates. Recruitment estimates prior to 2000 are based on solely survey data and are highly variable (@fig-horse) . Starting in 2000, recruitment estimates are based on sonar counts and are estimated with improved precision. Productive for most brood years after the 2003 brood has been low. The model we used is capable for accounting for these differences in data quality and the estimated median spawner-recruit relationship accounts for environmental variability by including information from both productivity regimes. The estimate of S~MSY~ from this model was 3,933 (95%CI 2,722 - 6,710) Chinook salmon (@tbl-params).
+
+```{r}
+#| fig-width: 7
+#| fig-height: 7
+#| echo: false 
+#| message: false 
+#| warning: false
+#| label: fig-horse
+#| fig-cap: "Plausible spawner-recruit relationships for the Yentna River Chinook salmon stock as derived from an age-structured state-space model fitted to abundance, harvest, and age data for 1977–2022. Note: Posterior means of R and S are plotted as brood year labels with 95% credibility intervals plotted as light dashed lines. The heavy dashed line is the Ricker relationship constructed from ln(\u03b1′) and \u03b2 posterior medians. Ricker relationships are also plotted (light grey lines) for 40 paired values of ln(\u03b1′) and \u03b2 sampled from the posterior probability distribution, representing plausible Ricker relationships that could have generated the observed data. Recruits replace spawners (R = S) on the diagonal line."
+ 
+horse_update <-
+  plot_horse_full(post) + 
+  ggplot2::theme_bw(base_size = 18)
+horse_update
+```
+
+```{r}
+#| echo: false 
+#| message: false 
+#| warning: false
+#| label: tbl-params
+#| tbl-cap: "Model parameter estimates for Anchor River Chinook salmon, calendar years 1977–2022. Note: Parameters \u03c0 are the average age composition for ocean ages 1-4, parameter D is the scale of the Dirichlet distribution governing age composition, and parameter \u03bb is an estimate of aerial survey observability."
+params_update_kable <- table_params_full(post, output = "kable")
+params_update_kable
+```
+
+Based on the updated SRA using the BFPM, the current escapement goal range (3,800--7,600) is one of the most conservative (high relative to S~MSY~) Chinook salmon escapement goals in Alaska with the lower bound of the current goal approximating S~MSY~ (3,933). Based on this and the updated optimal yield profile (@fig-OYP), the committee finds that modifying the current SEG to a range of 3,200--6,400 remains conservative while improving the probability of maximizing sustained yield on escapements throughout the escapement goal range.
+
+```{r}
+#| fig-width: 7
+#| fig-height: 4
+#| echo: false 
+#| message: false 
+#| warning: false
+#| label: fig-OYP
+#| fig-cap: "Optimal yield profile for Anchor River Chinook salmon. Profiles show the probability that a specified spawning abundance will result in 90% of maximum sustained yield. Grey shaded area brackets the proposed goal range."
+#### Create OYP Plot ####
+profile_full <- get_profile(post)
+OYP_update = plot_profile(profile_full, rug=FALSE, goal_range = c(3200, 6400), profiles = c("OYP"), percent = c("90"))+
+  scale_x_continuous("Spawners", breaks = seq(0, 9000,1500), labels = scales::comma) + 
+  ggplot2::theme_bw(base_size = 18) +
+  ggplot2::theme(legend.position = "none")
+OYP_update
+```
