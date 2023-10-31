@@ -1,0 +1,2421 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Tables and plots</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#table_age" id="toc-table_age" class="nav-link active" data-scroll-target="#table_age">table_age</a></li>
+  <li><a href="#table_brood" id="toc-table_brood" class="nav-link" data-scroll-target="#table_brood">table_brood</a></li>
+  <li><a href="#table_state" id="toc-table_state" class="nav-link" data-scroll-target="#table_state">table_state</a></li>
+  <li><a href="#plot_age" id="toc-plot_age" class="nav-link" data-scroll-target="#plot_age">plot_age</a></li>
+  <li><a href="#plot_chinbegs" id="toc-plot_chinbegs" class="nav-link" data-scroll-target="#plot_chinbegs">plot_chinBEG’s</a></li>
+  <li><a href="#plot_erfit" id="toc-plot_erfit" class="nav-link" data-scroll-target="#plot_erfit">plot_ERfit</a></li>
+  <li><a href="#plot_ey" id="toc-plot_ey" class="nav-link" data-scroll-target="#plot_ey">plot_ey</a></li>
+  <li><a href="#plot_horse_red" id="toc-plot_horse_red" class="nav-link" data-scroll-target="#plot_horse_red">plot_horse_red</a></li>
+  <li><a href="#plot_horse_full" id="toc-plot_horse_full" class="nav-link" data-scroll-target="#plot_horse_full">plot_horse_full</a></li>
+  <li><a href="#plot_swgoals" id="toc-plot_swgoals" class="nav-link" data-scroll-target="#plot_swgoals">plot_Swgoals</a></li>
+  <li><a href="#get_rhat" id="toc-get_rhat" class="nav-link" data-scroll-target="#get_rhat">get_Rhat</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Tables and plots</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="table_age" class="level2">
+<h2 class="anchored" data-anchor-id="table_age">table_age</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">p(age at maturity)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">q(age at return)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">N.ta(Number at return)</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 23%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Brood Year</th>
+<th style="text-align: right;">Age-3 (sd)</th>
+<th style="text-align: right;">Age-4 (sd)</th>
+<th style="text-align: right;">Age-5 (sd)</th>
+<th style="text-align: right;">Age-6 (sd)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1970</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+<td style="text-align: right;">0.32 (0.09)</td>
+<td style="text-align: right;">0.50 (0.10)</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1971</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+<td style="text-align: right;">0.31 (0.09)</td>
+<td style="text-align: right;">0.51 (0.10)</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1972</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+<td style="text-align: right;">0.34 (0.09)</td>
+<td style="text-align: right;">0.48 (0.10)</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1973</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+<td style="text-align: right;">0.33 (0.09)</td>
+<td style="text-align: right;">0.48 (0.10)</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1974</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+<td style="text-align: right;">0.32 (0.09)</td>
+<td style="text-align: right;">0.50 (0.10)</td>
+<td style="text-align: right;">0.09 (0.05)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1975</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+<td style="text-align: right;">0.33 (0.09)</td>
+<td style="text-align: right;">0.48 (0.10)</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1976</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+<td style="text-align: right;">0.31 (0.09)</td>
+<td style="text-align: right;">0.51 (0.10)</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1977</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+<td style="text-align: right;">0.34 (0.09)</td>
+<td style="text-align: right;">0.49 (0.10)</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1978</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+<td style="text-align: right;">0.32 (0.09)</td>
+<td style="text-align: right;">0.49 (0.10)</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1979</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+<td style="text-align: right;">0.32 (0.09)</td>
+<td style="text-align: right;">0.49 (0.09)</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1980</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+<td style="text-align: right;">0.30 (0.09)</td>
+<td style="text-align: right;">0.51 (0.10)</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1981</td>
+<td style="text-align: right;">0.08 (0.05)</td>
+<td style="text-align: right;">0.32 (0.09)</td>
+<td style="text-align: right;">0.51 (0.10)</td>
+<td style="text-align: right;">0.08 (0.05)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1982</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+<td style="text-align: right;">0.35 (0.09)</td>
+<td style="text-align: right;">0.46 (0.10)</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1983</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+<td style="text-align: right;">0.30 (0.09)</td>
+<td style="text-align: right;">0.50 (0.10)</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1984</td>
+<td style="text-align: right;">0.08 (0.05)</td>
+<td style="text-align: right;">0.31 (0.09)</td>
+<td style="text-align: right;">0.52 (0.09)</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1985</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+<td style="text-align: right;">0.34 (0.09)</td>
+<td style="text-align: right;">0.51 (0.10)</td>
+<td style="text-align: right;">0.06 (0.04)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1986</td>
+<td style="text-align: right;">0.11 (0.07)</td>
+<td style="text-align: right;">0.36 (0.10)</td>
+<td style="text-align: right;">0.42 (0.10)</td>
+<td style="text-align: right;">0.11 (0.07)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1987</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+<td style="text-align: right;">0.22 (0.08)</td>
+<td style="text-align: right;">0.58 (0.10)</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1988</td>
+<td style="text-align: right;">0.05 (0.04)</td>
+<td style="text-align: right;">0.37 (0.09)</td>
+<td style="text-align: right;">0.49 (0.09)</td>
+<td style="text-align: right;">0.08 (0.05)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1989</td>
+<td style="text-align: right;">0.11 (0.07)</td>
+<td style="text-align: right;">0.33 (0.09)</td>
+<td style="text-align: right;">0.48 (0.10)</td>
+<td style="text-align: right;">0.08 (0.05)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1990</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+<td style="text-align: right;">0.34 (0.10)</td>
+<td style="text-align: right;">0.46 (0.10)</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1991</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+<td style="text-align: right;">0.30 (0.09)</td>
+<td style="text-align: right;">0.51 (0.10)</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1992</td>
+<td style="text-align: right;">0.08 (0.05)</td>
+<td style="text-align: right;">0.33 (0.09)</td>
+<td style="text-align: right;">0.50 (0.09)</td>
+<td style="text-align: right;">0.09 (0.05)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1993</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+<td style="text-align: right;">0.32 (0.09)</td>
+<td style="text-align: right;">0.49 (0.10)</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1994</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+<td style="text-align: right;">0.32 (0.09)</td>
+<td style="text-align: right;">0.51 (0.10)</td>
+<td style="text-align: right;">0.08 (0.05)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1995</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+<td style="text-align: right;">0.35 (0.09)</td>
+<td style="text-align: right;">0.46 (0.10)</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1996</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+<td style="text-align: right;">0.27 (0.08)</td>
+<td style="text-align: right;">0.47 (0.09)</td>
+<td style="text-align: right;">0.16 (0.04)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1997</td>
+<td style="text-align: right;">0.07 (0.04)</td>
+<td style="text-align: right;">0.28 (0.07)</td>
+<td style="text-align: right;">0.49 (0.06)</td>
+<td style="text-align: right;">0.17 (0.03)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1998</td>
+<td style="text-align: right;">0.09 (0.05)</td>
+<td style="text-align: right;">0.25 (0.02)</td>
+<td style="text-align: right;">0.49 (0.03)</td>
+<td style="text-align: right;">0.17 (0.02)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1999</td>
+<td style="text-align: right;">0.06 (0.01)</td>
+<td style="text-align: right;">0.23 (0.02)</td>
+<td style="text-align: right;">0.52 (0.02)</td>
+<td style="text-align: right;">0.19 (0.02)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2000</td>
+<td style="text-align: right;">0.10 (0.02)</td>
+<td style="text-align: right;">0.25 (0.02)</td>
+<td style="text-align: right;">0.44 (0.03)</td>
+<td style="text-align: right;">0.21 (0.03)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2001</td>
+<td style="text-align: right;">0.07 (0.01)</td>
+<td style="text-align: right;">0.21 (0.03)</td>
+<td style="text-align: right;">0.67 (0.03)</td>
+<td style="text-align: right;">0.05 (0.02)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">0.08 (0.02)</td>
+<td style="text-align: right;">0.31 (0.03)</td>
+<td style="text-align: right;">0.59 (0.03)</td>
+<td style="text-align: right;">0.02 (0.01)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">0.04 (0.02)</td>
+<td style="text-align: right;">0.43 (0.05)</td>
+<td style="text-align: right;">0.44 (0.05)</td>
+<td style="text-align: right;">0.08 (0.02)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2004</td>
+<td style="text-align: right;">0.07 (0.02)</td>
+<td style="text-align: right;">0.38 (0.03)</td>
+<td style="text-align: right;">0.50 (0.03)</td>
+<td style="text-align: right;">0.05 (0.01)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">0.11 (0.03)</td>
+<td style="text-align: right;">0.42 (0.03)</td>
+<td style="text-align: right;">0.42 (0.03)</td>
+<td style="text-align: right;">0.06 (0.02)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">0.07 (0.02)</td>
+<td style="text-align: right;">0.41 (0.03)</td>
+<td style="text-align: right;">0.47 (0.03)</td>
+<td style="text-align: right;">0.05 (0.02)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">0.04 (0.01)</td>
+<td style="text-align: right;">0.39 (0.03)</td>
+<td style="text-align: right;">0.50 (0.03)</td>
+<td style="text-align: right;">0.07 (0.01)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">0.15 (0.03)</td>
+<td style="text-align: right;">0.43 (0.04)</td>
+<td style="text-align: right;">0.35 (0.03)</td>
+<td style="text-align: right;">0.08 (0.02)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">0.13 (0.02)</td>
+<td style="text-align: right;">0.15 (0.01)</td>
+<td style="text-align: right;">0.66 (0.03)</td>
+<td style="text-align: right;">0.07 (0.02)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">0.04 (6.30e-03)</td>
+<td style="text-align: right;">0.44 (0.02)</td>
+<td style="text-align: right;">0.47 (0.02)</td>
+<td style="text-align: right;">0.05 (0.01)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">0.16 (0.02)</td>
+<td style="text-align: right;">0.37 (0.02)</td>
+<td style="text-align: right;">0.45 (0.02)</td>
+<td style="text-align: right;">0.03 (5.93e-03)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">0.12 (0.03)</td>
+<td style="text-align: right;">0.40 (0.04)</td>
+<td style="text-align: right;">0.38 (0.03)</td>
+<td style="text-align: right;">0.10 (0.02)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">0.12 (0.02)</td>
+<td style="text-align: right;">0.22 (0.02)</td>
+<td style="text-align: right;">0.58 (0.02)</td>
+<td style="text-align: right;">0.07 (0.01)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">0.04 (0.01)</td>
+<td style="text-align: right;">0.35 (0.04)</td>
+<td style="text-align: right;">0.52 (0.04)</td>
+<td style="text-align: right;">0.09 (0.02)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">0.07 (0.02)</td>
+<td style="text-align: right;">0.27 (0.03)</td>
+<td style="text-align: right;">0.63 (0.03)</td>
+<td style="text-align: right;">0.03 (0.01)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">0.15 (0.03)</td>
+<td style="text-align: right;">0.24 (0.04)</td>
+<td style="text-align: right;">0.51 (0.05)</td>
+<td style="text-align: right;">0.11 (0.07)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">0.07 (0.02)</td>
+<td style="text-align: right;">0.37 (0.08)</td>
+<td style="text-align: right;">0.48 (0.09)</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">0.05 (0.03)</td>
+<td style="text-align: right;">0.33 (0.10)</td>
+<td style="text-align: right;">0.52 (0.10)</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+</tr>
+</tbody>
+</table>
+<p>TRUE</p>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 22%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 22%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Calendar Year</th>
+<th style="text-align: right;">Age-3 (sd)</th>
+<th style="text-align: right;">Age-4 (sd)</th>
+<th style="text-align: right;">Age-5 (sd)</th>
+<th style="text-align: right;">Age-6 (sd)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1977</td>
+<td style="text-align: right;">0.08 (0.08)</td>
+<td style="text-align: right;">0.35 (0.22)</td>
+<td style="text-align: right;">0.47 (0.22)</td>
+<td style="text-align: right;">0.10 (0.12)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1978</td>
+<td style="text-align: right;">0.08 (0.08)</td>
+<td style="text-align: right;">0.28 (0.18)</td>
+<td style="text-align: right;">0.53 (0.22)</td>
+<td style="text-align: right;">0.11 (0.11)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1979</td>
+<td style="text-align: right;">0.08 (0.08)</td>
+<td style="text-align: right;">0.30 (0.18)</td>
+<td style="text-align: right;">0.48 (0.21)</td>
+<td style="text-align: right;">0.15 (0.15)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1980</td>
+<td style="text-align: right;">0.08 (0.09)</td>
+<td style="text-align: right;">0.32 (0.18)</td>
+<td style="text-align: right;">0.48 (0.21)</td>
+<td style="text-align: right;">0.12 (0.12)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1981</td>
+<td style="text-align: right;">0.09 (0.08)</td>
+<td style="text-align: right;">0.28 (0.17)</td>
+<td style="text-align: right;">0.51 (0.21)</td>
+<td style="text-align: right;">0.11 (0.11)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1982</td>
+<td style="text-align: right;">0.10 (0.08)</td>
+<td style="text-align: right;">0.33 (0.14)</td>
+<td style="text-align: right;">0.43 (0.17)</td>
+<td style="text-align: right;">0.13 (0.12)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1983</td>
+<td style="text-align: right;">0.10 (0.07)</td>
+<td style="text-align: right;">0.34 (0.13)</td>
+<td style="text-align: right;">0.49 (0.14)</td>
+<td style="text-align: right;">0.08 (0.06)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1984</td>
+<td style="text-align: right;">0.12 (0.09)</td>
+<td style="text-align: right;">0.30 (0.12)</td>
+<td style="text-align: right;">0.48 (0.13)</td>
+<td style="text-align: right;">0.09 (0.07)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1985</td>
+<td style="text-align: right;">0.13 (0.09)</td>
+<td style="text-align: right;">0.36 (0.13)</td>
+<td style="text-align: right;">0.42 (0.14)</td>
+<td style="text-align: right;">0.08 (0.06)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1986</td>
+<td style="text-align: right;">0.10 (0.07)</td>
+<td style="text-align: right;">0.36 (0.13)</td>
+<td style="text-align: right;">0.47 (0.13)</td>
+<td style="text-align: right;">0.07 (0.05)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1987</td>
+<td style="text-align: right;">0.09 (0.07)</td>
+<td style="text-align: right;">0.31 (0.12)</td>
+<td style="text-align: right;">0.52 (0.14)</td>
+<td style="text-align: right;">0.09 (0.07)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1988</td>
+<td style="text-align: right;">0.10 (0.07)</td>
+<td style="text-align: right;">0.31 (0.11)</td>
+<td style="text-align: right;">0.48 (0.13)</td>
+<td style="text-align: right;">0.10 (0.07)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1989</td>
+<td style="text-align: right;">0.08 (0.06)</td>
+<td style="text-align: right;">0.35 (0.13)</td>
+<td style="text-align: right;">0.48 (0.13)</td>
+<td style="text-align: right;">0.09 (0.07)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1990</td>
+<td style="text-align: right;">0.06 (0.05)</td>
+<td style="text-align: right;">0.28 (0.12)</td>
+<td style="text-align: right;">0.56 (0.13)</td>
+<td style="text-align: right;">0.10 (0.07)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1991</td>
+<td style="text-align: right;">0.11 (0.08)</td>
+<td style="text-align: right;">0.23 (0.11)</td>
+<td style="text-align: right;">0.52 (0.14)</td>
+<td style="text-align: right;">0.14 (0.10)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1992</td>
+<td style="text-align: right;">0.13 (0.09)</td>
+<td style="text-align: right;">0.36 (0.12)</td>
+<td style="text-align: right;">0.41 (0.12)</td>
+<td style="text-align: right;">0.10 (0.07)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1993</td>
+<td style="text-align: right;">0.11 (0.09)</td>
+<td style="text-align: right;">0.42 (0.16)</td>
+<td style="text-align: right;">0.42 (0.16)</td>
+<td style="text-align: right;">0.05 (0.04)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1994</td>
+<td style="text-align: right;">0.07 (0.05)</td>
+<td style="text-align: right;">0.31 (0.13)</td>
+<td style="text-align: right;">0.54 (0.14)</td>
+<td style="text-align: right;">0.07 (0.06)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1995</td>
+<td style="text-align: right;">0.06 (0.05)</td>
+<td style="text-align: right;">0.27 (0.11)</td>
+<td style="text-align: right;">0.54 (0.14)</td>
+<td style="text-align: right;">0.12 (0.09)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1996</td>
+<td style="text-align: right;">0.11 (0.08)</td>
+<td style="text-align: right;">0.27 (0.11)</td>
+<td style="text-align: right;">0.50 (0.13)</td>
+<td style="text-align: right;">0.12 (0.09)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1997</td>
+<td style="text-align: right;">0.12 (0.09)</td>
+<td style="text-align: right;">0.37 (0.14)</td>
+<td style="text-align: right;">0.41 (0.15)</td>
+<td style="text-align: right;">0.10 (0.07)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1998</td>
+<td style="text-align: right;">0.10 (0.08)</td>
+<td style="text-align: right;">0.35 (0.13)</td>
+<td style="text-align: right;">0.48 (0.13)</td>
+<td style="text-align: right;">0.07 (0.06)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1999</td>
+<td style="text-align: right;">0.09 (0.07)</td>
+<td style="text-align: right;">0.33 (0.12)</td>
+<td style="text-align: right;">0.50 (0.13)</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2000</td>
+<td style="text-align: right;">0.12 (0.08)</td>
+<td style="text-align: right;">0.29 (0.12)</td>
+<td style="text-align: right;">0.50 (0.14)</td>
+<td style="text-align: right;">0.10 (0.07)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2001</td>
+<td style="text-align: right;">0.13 (0.08)</td>
+<td style="text-align: right;">0.36 (0.12)</td>
+<td style="text-align: right;">0.43 (0.12)</td>
+<td style="text-align: right;">0.09 (0.06)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">0.10 (0.06)</td>
+<td style="text-align: right;">0.38 (0.12)</td>
+<td style="text-align: right;">0.46 (0.12)</td>
+<td style="text-align: right;">0.07 (0.05)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">0.05 (0.01)</td>
+<td style="text-align: right;">0.23 (0.02)</td>
+<td style="text-align: right;">0.58 (0.02)</td>
+<td style="text-align: right;">0.13 (0.02)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2004</td>
+<td style="text-align: right;">0.09 (0.02)</td>
+<td style="text-align: right;">0.22 (0.03)</td>
+<td style="text-align: right;">0.49 (0.03)</td>
+<td style="text-align: right;">0.21 (0.02)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">0.05 (0.01)</td>
+<td style="text-align: right;">0.24 (0.02)</td>
+<td style="text-align: right;">0.52 (0.02)</td>
+<td style="text-align: right;">0.18 (0.02)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">0.06 (0.02)</td>
+<td style="text-align: right;">0.18 (0.03)</td>
+<td style="text-align: right;">0.52 (0.03)</td>
+<td style="text-align: right;">0.23 (0.03)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">0.01 (7.59e-03)</td>
+<td style="text-align: right;">0.23 (0.03)</td>
+<td style="text-align: right;">0.53 (0.04)</td>
+<td style="text-align: right;">0.22 (0.03)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">0.05 (0.02)</td>
+<td style="text-align: right;">0.22 (0.04)</td>
+<td style="text-align: right;">0.67 (0.04)</td>
+<td style="text-align: right;">0.06 (0.02)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">0.11 (0.03)</td>
+<td style="text-align: right;">0.45 (0.05)</td>
+<td style="text-align: right;">0.39 (0.05)</td>
+<td style="text-align: right;">0.05 (0.02)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">0.07 (0.02)</td>
+<td style="text-align: right;">0.36 (0.03)</td>
+<td style="text-align: right;">0.51 (0.03)</td>
+<td style="text-align: right;">0.06 (0.01)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">0.04 (0.01)</td>
+<td style="text-align: right;">0.49 (0.03)</td>
+<td style="text-align: right;">0.42 (0.03)</td>
+<td style="text-align: right;">0.06 (0.01)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">0.10 (0.02)</td>
+<td style="text-align: right;">0.34 (0.04)</td>
+<td style="text-align: right;">0.51 (0.04)</td>
+<td style="text-align: right;">0.05 (0.02)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">0.20 (0.03)</td>
+<td style="text-align: right;">0.31 (0.04)</td>
+<td style="text-align: right;">0.44 (0.04)</td>
+<td style="text-align: right;">0.06 (0.02)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">0.13 (0.02)</td>
+<td style="text-align: right;">0.36 (0.03)</td>
+<td style="text-align: right;">0.40 (0.03)</td>
+<td style="text-align: right;">0.10 (0.02)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">0.13 (0.02)</td>
+<td style="text-align: right;">0.40 (0.02)</td>
+<td style="text-align: right;">0.44 (0.02)</td>
+<td style="text-align: right;">0.03 (7.44e-03)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">0.06 (0.01)</td>
+<td style="text-align: right;">0.37 (0.03)</td>
+<td style="text-align: right;">0.51 (0.03)</td>
+<td style="text-align: right;">0.06 (0.01)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">0.12 (0.02)</td>
+<td style="text-align: right;">0.24 (0.03)</td>
+<td style="text-align: right;">0.58 (0.03)</td>
+<td style="text-align: right;">0.07 (0.02)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">0.04 (0.01)</td>
+<td style="text-align: right;">0.44 (0.03)</td>
+<td style="text-align: right;">0.45 (0.03)</td>
+<td style="text-align: right;">0.07 (0.02)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">0.05 (0.01)</td>
+<td style="text-align: right;">0.21 (0.03)</td>
+<td style="text-align: right;">0.67 (0.03)</td>
+<td style="text-align: right;">0.07 (0.02)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">0.11 (0.02)</td>
+<td style="text-align: right;">0.32 (0.04)</td>
+<td style="text-align: right;">0.45 (0.04)</td>
+<td style="text-align: right;">0.12 (0.03)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">0.06 (0.02)</td>
+<td style="text-align: right;">0.16 (0.03)</td>
+<td style="text-align: right;">0.70 (0.04)</td>
+<td style="text-align: right;">0.08 (0.02)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">0.07 (0.02)</td>
+<td style="text-align: right;">0.41 (0.04)</td>
+<td style="text-align: right;">0.47 (0.04)</td>
+<td style="text-align: right;">0.05 (0.02)</td>
+</tr>
+</tbody>
+</table>
+<p>TRUE</p>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Calendar Year</th>
+<th style="text-align: right;">Age-3 (CV)</th>
+<th style="text-align: right;">Age-4 (CV)</th>
+<th style="text-align: right;">Age-5 (CV)</th>
+<th style="text-align: right;">Age-6 (CV)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1977</td>
+<td style="text-align: right;">1,293 (1.0)</td>
+<td style="text-align: right;">6,188 (0.72)</td>
+<td style="text-align: right;">8,880 (0.70)</td>
+<td style="text-align: right;">1,816 (1.6)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1978</td>
+<td style="text-align: right;">1,144 (1.1)</td>
+<td style="text-align: right;">4,249 (0.74)</td>
+<td style="text-align: right;">8,530 (0.62)</td>
+<td style="text-align: right;">1,652 (1.1)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1979</td>
+<td style="text-align: right;">943 (0.96)</td>
+<td style="text-align: right;">3,521 (0.74)</td>
+<td style="text-align: right;">5,891 (0.62)</td>
+<td style="text-align: right;">1,645 (1.0)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1980</td>
+<td style="text-align: right;">666 (0.89)</td>
+<td style="text-align: right;">3,441 (0.76)</td>
+<td style="text-align: right;">5,770 (0.79)</td>
+<td style="text-align: right;">1,178 (1.0)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1981</td>
+<td style="text-align: right;">776 (0.87)</td>
+<td style="text-align: right;">2,364 (0.63)</td>
+<td style="text-align: right;">4,740 (0.61)</td>
+<td style="text-align: right;">981 (1.0)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1982</td>
+<td style="text-align: right;">859 (0.86)</td>
+<td style="text-align: right;">2,852 (0.54)</td>
+<td style="text-align: right;">3,800 (0.57)</td>
+<td style="text-align: right;">1,071 (1.0)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1983</td>
+<td style="text-align: right;">780 (0.82)</td>
+<td style="text-align: right;">2,807 (0.50)</td>
+<td style="text-align: right;">4,093 (0.47)</td>
+<td style="text-align: right;">660 (0.88)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1984</td>
+<td style="text-align: right;">1,057 (0.81)</td>
+<td style="text-align: right;">2,625 (0.53)</td>
+<td style="text-align: right;">4,219 (0.47)</td>
+<td style="text-align: right;">752 (0.82)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1985</td>
+<td style="text-align: right;">1,213 (0.84)</td>
+<td style="text-align: right;">3,461 (0.50)</td>
+<td style="text-align: right;">4,039 (0.49)</td>
+<td style="text-align: right;">774 (0.80)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1986</td>
+<td style="text-align: right;">1,218 (0.84)</td>
+<td style="text-align: right;">4,558 (0.53)</td>
+<td style="text-align: right;">5,950 (0.46)</td>
+<td style="text-align: right;">814 (0.85)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1987</td>
+<td style="text-align: right;">1,173 (0.80)</td>
+<td style="text-align: right;">4,298 (0.57)</td>
+<td style="text-align: right;">7,478 (0.53)</td>
+<td style="text-align: right;">1,151 (0.84)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1988</td>
+<td style="text-align: right;">1,110 (0.79)</td>
+<td style="text-align: right;">3,520 (0.48)</td>
+<td style="text-align: right;">5,605 (0.48)</td>
+<td style="text-align: right;">1,193 (0.82)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1989</td>
+<td style="text-align: right;">901 (0.80)</td>
+<td style="text-align: right;">4,129 (0.46)</td>
+<td style="text-align: right;">5,807 (0.42)</td>
+<td style="text-align: right;">1,101 (0.80)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1990</td>
+<td style="text-align: right;">674 (0.89)</td>
+<td style="text-align: right;">3,361 (0.50)</td>
+<td style="text-align: right;">6,879 (0.40)</td>
+<td style="text-align: right;">1,171 (0.78)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1991</td>
+<td style="text-align: right;">964 (0.81)</td>
+<td style="text-align: right;">2,126 (0.57)</td>
+<td style="text-align: right;">4,934 (0.43)</td>
+<td style="text-align: right;">1,257 (0.78)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1992</td>
+<td style="text-align: right;">736 (0.75)</td>
+<td style="text-align: right;">2,054 (0.47)</td>
+<td style="text-align: right;">2,421 (0.48)</td>
+<td style="text-align: right;">575 (0.73)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1993</td>
+<td style="text-align: right;">1,474 (0.88)</td>
+<td style="text-align: right;">5,651 (0.50)</td>
+<td style="text-align: right;">5,645 (0.46)</td>
+<td style="text-align: right;">681 (0.88)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1994</td>
+<td style="text-align: right;">900 (0.80)</td>
+<td style="text-align: right;">4,188 (0.51)</td>
+<td style="text-align: right;">7,337 (0.39)</td>
+<td style="text-align: right;">965 (0.85)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1995</td>
+<td style="text-align: right;">664 (0.85)</td>
+<td style="text-align: right;">2,936 (0.50)</td>
+<td style="text-align: right;">6,042 (0.48)</td>
+<td style="text-align: right;">1,275 (0.79)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1996</td>
+<td style="text-align: right;">821 (0.76)</td>
+<td style="text-align: right;">2,114 (0.55)</td>
+<td style="text-align: right;">3,943 (0.41)</td>
+<td style="text-align: right;">939 (0.78)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1997</td>
+<td style="text-align: right;">1,095 (0.79)</td>
+<td style="text-align: right;">3,337 (0.46)</td>
+<td style="text-align: right;">3,667 (0.49)</td>
+<td style="text-align: right;">845 (0.75)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1998</td>
+<td style="text-align: right;">1,052 (0.78)</td>
+<td style="text-align: right;">3,626 (0.48)</td>
+<td style="text-align: right;">5,070 (0.42)</td>
+<td style="text-align: right;">705 (0.88)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1999</td>
+<td style="text-align: right;">959 (0.77)</td>
+<td style="text-align: right;">3,606 (0.48)</td>
+<td style="text-align: right;">5,576 (0.40)</td>
+<td style="text-align: right;">921 (0.76)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2000</td>
+<td style="text-align: right;">1,301 (0.75)</td>
+<td style="text-align: right;">3,336 (0.48)</td>
+<td style="text-align: right;">5,747 (0.40)</td>
+<td style="text-align: right;">1,074 (0.80)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2001</td>
+<td style="text-align: right;">1,254 (0.70)</td>
+<td style="text-align: right;">3,518 (0.41)</td>
+<td style="text-align: right;">4,267 (0.41)</td>
+<td style="text-align: right;">870 (0.77)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">1,275 (0.68)</td>
+<td style="text-align: right;">5,072 (0.38)</td>
+<td style="text-align: right;">6,161 (0.36)</td>
+<td style="text-align: right;">878 (0.81)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">795 (0.20)</td>
+<td style="text-align: right;">3,494 (0.09)</td>
+<td style="text-align: right;">8,631 (0.05)</td>
+<td style="text-align: right;">1,964 (0.13)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2004</td>
+<td style="text-align: right;">1,230 (0.19)</td>
+<td style="text-align: right;">3,065 (0.12)</td>
+<td style="text-align: right;">6,900 (0.07)</td>
+<td style="text-align: right;">2,984 (0.12)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">673 (0.21)</td>
+<td style="text-align: right;">3,204 (0.09)</td>
+<td style="text-align: right;">6,821 (0.06)</td>
+<td style="text-align: right;">2,418 (0.11)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">686 (0.27)</td>
+<td style="text-align: right;">1,967 (0.15)</td>
+<td style="text-align: right;">5,618 (0.07)</td>
+<td style="text-align: right;">2,514 (0.13)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">165 (0.56)</td>
+<td style="text-align: right;">2,763 (0.14)</td>
+<td style="text-align: right;">6,445 (0.08)</td>
+<td style="text-align: right;">2,714 (0.14)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">364 (0.37)</td>
+<td style="text-align: right;">1,669 (0.17)</td>
+<td style="text-align: right;">5,188 (0.07)</td>
+<td style="text-align: right;">483 (0.35)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">475 (0.27)</td>
+<td style="text-align: right;">1,948 (0.12)</td>
+<td style="text-align: right;">1,694 (0.13)</td>
+<td style="text-align: right;">221 (0.44)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">361 (0.23)</td>
+<td style="text-align: right;">1,788 (0.09)</td>
+<td style="text-align: right;">2,585 (0.07)</td>
+<td style="text-align: right;">301 (0.24)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">159 (0.30)</td>
+<td style="text-align: right;">2,105 (0.07)</td>
+<td style="text-align: right;">1,804 (0.08)</td>
+<td style="text-align: right;">260 (0.23)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">491 (0.22)</td>
+<td style="text-align: right;">1,607 (0.11)</td>
+<td style="text-align: right;">2,417 (0.09)</td>
+<td style="text-align: right;">244 (0.33)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">925 (0.16)</td>
+<td style="text-align: right;">1,437 (0.12)</td>
+<td style="text-align: right;">2,067 (0.10)</td>
+<td style="text-align: right;">265 (0.33)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">378 (0.16)</td>
+<td style="text-align: right;">1,052 (0.09)</td>
+<td style="text-align: right;">1,167 (0.08)</td>
+<td style="text-align: right;">286 (0.18)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">1,421 (0.14)</td>
+<td style="text-align: right;">4,194 (0.08)</td>
+<td style="text-align: right;">4,718 (0.08)</td>
+<td style="text-align: right;">274 (0.29)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">507 (0.24)</td>
+<td style="text-align: right;">3,330 (0.09)</td>
+<td style="text-align: right;">4,552 (0.07)</td>
+<td style="text-align: right;">493 (0.25)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">812 (0.19)</td>
+<td style="text-align: right;">1,643 (0.13)</td>
+<td style="text-align: right;">4,009 (0.07)</td>
+<td style="text-align: right;">483 (0.26)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">134 (0.32)</td>
+<td style="text-align: right;">1,536 (0.09)</td>
+<td style="text-align: right;">1,558 (0.08)</td>
+<td style="text-align: right;">231 (0.23)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">323 (0.28)</td>
+<td style="text-align: right;">1,259 (0.13)</td>
+<td style="text-align: right;">4,007 (0.05)</td>
+<td style="text-align: right;">426 (0.25)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">447 (0.23)</td>
+<td style="text-align: right;">1,347 (0.12)</td>
+<td style="text-align: right;">1,869 (0.09)</td>
+<td style="text-align: right;">498 (0.21)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">254 (0.33)</td>
+<td style="text-align: right;">737 (0.19)</td>
+<td style="text-align: right;">3,143 (0.06)</td>
+<td style="text-align: right;">343 (0.28)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">220 (0.32)</td>
+<td style="text-align: right;">1,350 (0.11)</td>
+<td style="text-align: right;">1,539 (0.09)</td>
+<td style="text-align: right;">149 (0.39)</td>
+</tr>
+</tbody>
+</table>
+<p>TRUE</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="table_brood" class="level2">
+<h2 class="anchored" data-anchor-id="table_brood">table_brood</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">year</th>
+<th style="text-align: right;">S</th>
+<th style="text-align: right;">R</th>
+<th style="text-align: right;">age-3</th>
+<th style="text-align: right;">age-4</th>
+<th style="text-align: right;">age-5</th>
+<th style="text-align: right;">age-6</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1970</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">21652</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1971</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">17804</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1815</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1972</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">17943</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">8880</td>
+<td style="text-align: right;">1651</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1973</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">12610</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">6188</td>
+<td style="text-align: right;">8529</td>
+<td style="text-align: right;">1644</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1974</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">11416</td>
+<td style="text-align: right;">1292</td>
+<td style="text-align: right;">4249</td>
+<td style="text-align: right;">5891</td>
+<td style="text-align: right;">1177</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1975</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">10195</td>
+<td style="text-align: right;">1144</td>
+<td style="text-align: right;">3520</td>
+<td style="text-align: right;">5770</td>
+<td style="text-align: right;">980</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1976</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">7488</td>
+<td style="text-align: right;">943</td>
+<td style="text-align: right;">3440</td>
+<td style="text-align: right;">4740</td>
+<td style="text-align: right;">1071</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1977</td>
+<td style="text-align: right;">16166</td>
+<td style="text-align: right;">8473</td>
+<td style="text-align: right;">665</td>
+<td style="text-align: right;">2363</td>
+<td style="text-align: right;">3799</td>
+<td style="text-align: right;">659</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1978</td>
+<td style="text-align: right;">12687</td>
+<td style="text-align: right;">8658</td>
+<td style="text-align: right;">775</td>
+<td style="text-align: right;">2851</td>
+<td style="text-align: right;">4093</td>
+<td style="text-align: right;">752</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1979</td>
+<td style="text-align: right;">9510</td>
+<td style="text-align: right;">8258</td>
+<td style="text-align: right;">859</td>
+<td style="text-align: right;">2806</td>
+<td style="text-align: right;">4219</td>
+<td style="text-align: right;">773</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1980</td>
+<td style="text-align: right;">9872</td>
+<td style="text-align: right;">11619</td>
+<td style="text-align: right;">780</td>
+<td style="text-align: right;">2624</td>
+<td style="text-align: right;">4039</td>
+<td style="text-align: right;">814</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1981</td>
+<td style="text-align: right;">7332</td>
+<td style="text-align: right;">14441</td>
+<td style="text-align: right;">1057</td>
+<td style="text-align: right;">3460</td>
+<td style="text-align: right;">5950</td>
+<td style="text-align: right;">1150</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1982</td>
+<td style="text-align: right;">7419</td>
+<td style="text-align: right;">12221</td>
+<td style="text-align: right;">1213</td>
+<td style="text-align: right;">4557</td>
+<td style="text-align: right;">7477</td>
+<td style="text-align: right;">1192</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1983</td>
+<td style="text-align: right;">6662</td>
+<td style="text-align: right;">11671</td>
+<td style="text-align: right;">1218</td>
+<td style="text-align: right;">4298</td>
+<td style="text-align: right;">5604</td>
+<td style="text-align: right;">1100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1984</td>
+<td style="text-align: right;">7206</td>
+<td style="text-align: right;">13374</td>
+<td style="text-align: right;">1172</td>
+<td style="text-align: right;">3519</td>
+<td style="text-align: right;">5807</td>
+<td style="text-align: right;">1171</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1985</td>
+<td style="text-align: right;">8314</td>
+<td style="text-align: right;">9771</td>
+<td style="text-align: right;">1110</td>
+<td style="text-align: right;">4128</td>
+<td style="text-align: right;">6879</td>
+<td style="text-align: right;">1256</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1986</td>
+<td style="text-align: right;">10784</td>
+<td style="text-align: right;">5901</td>
+<td style="text-align: right;">900</td>
+<td style="text-align: right;">3361</td>
+<td style="text-align: right;">4933</td>
+<td style="text-align: right;">575</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1987</td>
+<td style="text-align: right;">12606</td>
+<td style="text-align: right;">9628</td>
+<td style="text-align: right;">673</td>
+<td style="text-align: right;">2126</td>
+<td style="text-align: right;">2420</td>
+<td style="text-align: right;">681</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1988</td>
+<td style="text-align: right;">9831</td>
+<td style="text-align: right;">14998</td>
+<td style="text-align: right;">963</td>
+<td style="text-align: right;">2054</td>
+<td style="text-align: right;">5644</td>
+<td style="text-align: right;">965</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1989</td>
+<td style="text-align: right;">10728</td>
+<td style="text-align: right;">12642</td>
+<td style="text-align: right;">735</td>
+<td style="text-align: right;">5651</td>
+<td style="text-align: right;">7336</td>
+<td style="text-align: right;">1275</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1990</td>
+<td style="text-align: right;">10004</td>
+<td style="text-align: right;">8622</td>
+<td style="text-align: right;">1473</td>
+<td style="text-align: right;">4187</td>
+<td style="text-align: right;">6042</td>
+<td style="text-align: right;">939</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1991</td>
+<td style="text-align: right;">7761</td>
+<td style="text-align: right;">7149</td>
+<td style="text-align: right;">899</td>
+<td style="text-align: right;">2935</td>
+<td style="text-align: right;">3942</td>
+<td style="text-align: right;">844</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1992</td>
+<td style="text-align: right;">3767</td>
+<td style="text-align: right;">10150</td>
+<td style="text-align: right;">663</td>
+<td style="text-align: right;">2114</td>
+<td style="text-align: right;">3666</td>
+<td style="text-align: right;">705</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1993</td>
+<td style="text-align: right;">10054</td>
+<td style="text-align: right;">11370</td>
+<td style="text-align: right;">821</td>
+<td style="text-align: right;">3337</td>
+<td style="text-align: right;">5070</td>
+<td style="text-align: right;">921</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1994</td>
+<td style="text-align: right;">10264</td>
+<td style="text-align: right;">11274</td>
+<td style="text-align: right;">1094</td>
+<td style="text-align: right;">3625</td>
+<td style="text-align: right;">5575</td>
+<td style="text-align: right;">1074</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1995</td>
+<td style="text-align: right;">8884</td>
+<td style="text-align: right;">9440</td>
+<td style="text-align: right;">1051</td>
+<td style="text-align: right;">3606</td>
+<td style="text-align: right;">5747</td>
+<td style="text-align: right;">869</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1996</td>
+<td style="text-align: right;">5999</td>
+<td style="text-align: right;">12944</td>
+<td style="text-align: right;">958</td>
+<td style="text-align: right;">3336</td>
+<td style="text-align: right;">4266</td>
+<td style="text-align: right;">878</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1997</td>
+<td style="text-align: right;">7025</td>
+<td style="text-align: right;">17941</td>
+<td style="text-align: right;">1300</td>
+<td style="text-align: right;">3518</td>
+<td style="text-align: right;">6161</td>
+<td style="text-align: right;">1964</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1998</td>
+<td style="text-align: right;">9237</td>
+<td style="text-align: right;">14086</td>
+<td style="text-align: right;">1254</td>
+<td style="text-align: right;">5071</td>
+<td style="text-align: right;">8630</td>
+<td style="text-align: right;">2984</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1999</td>
+<td style="text-align: right;">9199</td>
+<td style="text-align: right;">13195</td>
+<td style="text-align: right;">1275</td>
+<td style="text-align: right;">3493</td>
+<td style="text-align: right;">6900</td>
+<td style="text-align: right;">2417</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2000</td>
+<td style="text-align: right;">9279</td>
+<td style="text-align: right;">12765</td>
+<td style="text-align: right;">795</td>
+<td style="text-align: right;">3065</td>
+<td style="text-align: right;">6821</td>
+<td style="text-align: right;">2513</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2001</td>
+<td style="text-align: right;">8587</td>
+<td style="text-align: right;">9568</td>
+<td style="text-align: right;">1229</td>
+<td style="text-align: right;">3204</td>
+<td style="text-align: right;">5617</td>
+<td style="text-align: right;">2714</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">11765</td>
+<td style="text-align: right;">8857</td>
+<td style="text-align: right;">673</td>
+<td style="text-align: right;">1966</td>
+<td style="text-align: right;">6445</td>
+<td style="text-align: right;">482</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">13255</td>
+<td style="text-align: right;">3828</td>
+<td style="text-align: right;">686</td>
+<td style="text-align: right;">2762</td>
+<td style="text-align: right;">5187</td>
+<td style="text-align: right;">221</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2004</td>
+<td style="text-align: right;">12029</td>
+<td style="text-align: right;">5156</td>
+<td style="text-align: right;">164</td>
+<td style="text-align: right;">1668</td>
+<td style="text-align: right;">1693</td>
+<td style="text-align: right;">301</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">11147</td>
+<td style="text-align: right;">4310</td>
+<td style="text-align: right;">364</td>
+<td style="text-align: right;">1947</td>
+<td style="text-align: right;">2585</td>
+<td style="text-align: right;">259</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">8991</td>
+<td style="text-align: right;">5146</td>
+<td style="text-align: right;">474</td>
+<td style="text-align: right;">1788</td>
+<td style="text-align: right;">1803</td>
+<td style="text-align: right;">243</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">9588</td>
+<td style="text-align: right;">4119</td>
+<td style="text-align: right;">360</td>
+<td style="text-align: right;">2105</td>
+<td style="text-align: right;">2416</td>
+<td style="text-align: right;">264</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">5806</td>
+<td style="text-align: right;">3369</td>
+<td style="text-align: right;">159</td>
+<td style="text-align: right;">1607</td>
+<td style="text-align: right;">2067</td>
+<td style="text-align: right;">285</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">3458</td>
+<td style="text-align: right;">7188</td>
+<td style="text-align: right;">490</td>
+<td style="text-align: right;">1437</td>
+<td style="text-align: right;">1167</td>
+<td style="text-align: right;">274</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">4446</td>
+<td style="text-align: right;">9607</td>
+<td style="text-align: right;">924</td>
+<td style="text-align: right;">1052</td>
+<td style="text-align: right;">4718</td>
+<td style="text-align: right;">492</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">3548</td>
+<td style="text-align: right;">8991</td>
+<td style="text-align: right;">378</td>
+<td style="text-align: right;">4194</td>
+<td style="text-align: right;">4552</td>
+<td style="text-align: right;">483</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">4505</td>
+<td style="text-align: right;">4134</td>
+<td style="text-align: right;">1421</td>
+<td style="text-align: right;">3329</td>
+<td style="text-align: right;">4008</td>
+<td style="text-align: right;">231</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">4362</td>
+<td style="text-align: right;">6853</td>
+<td style="text-align: right;">506</td>
+<td style="text-align: right;">1643</td>
+<td style="text-align: right;">1558</td>
+<td style="text-align: right;">426</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">2511</td>
+<td style="text-align: right;">3605</td>
+<td style="text-align: right;">812</td>
+<td style="text-align: right;">1535</td>
+<td style="text-align: right;">4007</td>
+<td style="text-align: right;">498</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">9818</td>
+<td style="text-align: right;">4962</td>
+<td style="text-align: right;">133</td>
+<td style="text-align: right;">1258</td>
+<td style="text-align: right;">1869</td>
+<td style="text-align: right;">343</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">7145</td>
+<td style="text-align: right;">3060</td>
+<td style="text-align: right;">323</td>
+<td style="text-align: right;">1346</td>
+<td style="text-align: right;">3143</td>
+<td style="text-align: right;">148</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">5793</td>
+<td style="text-align: right;">3851</td>
+<td style="text-align: right;">447</td>
+<td style="text-align: right;">736</td>
+<td style="text-align: right;">1538</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">3175</td>
+<td style="text-align: right;">5062</td>
+<td style="text-align: right;">254</td>
+<td style="text-align: right;">1350</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">5597</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">220</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">3629</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">4297</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">3127</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
+<p>TRUE</p>
+</div>
+</div>
+</section>
+<section id="table_state" class="level2">
+<h2 class="anchored" data-anchor-id="table_state">table_state</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 21%">
+<col style="width: 24%">
+<col style="width: 22%">
+<col style="width: 24%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Year</th>
+<th style="text-align: right;">Total Run (CV)</th>
+<th style="text-align: right;">Inriver Run (CV)</th>
+<th style="text-align: right;">Escapement (CV)</th>
+<th style="text-align: right;">Recruitment (CV)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1970</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">12,867 (2.19)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1971</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">15,100 (0.74)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1972</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">15,936 (0.62)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1973</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">11,445 (0.63)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1974</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">10,007 (0.72)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1975</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">9,227 (0.62)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1976</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">6,816 (0.53)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1977</td>
+<td style="text-align: right;">17,096 (0.37)</td>
+<td style="text-align: right;">16,227 (0.37)</td>
+<td style="text-align: right;">15,083 (0.40)</td>
+<td style="text-align: right;">7,814 (0.44)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1978</td>
+<td style="text-align: right;">14,735 (0.34)</td>
+<td style="text-align: right;">14,002 (0.34)</td>
+<td style="text-align: right;">11,873 (0.39)</td>
+<td style="text-align: right;">7,973 (0.43)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1979</td>
+<td style="text-align: right;">11,408 (0.34)</td>
+<td style="text-align: right;">10,824 (0.34)</td>
+<td style="text-align: right;">8,919 (0.40)</td>
+<td style="text-align: right;">7,650 (0.45)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1980</td>
+<td style="text-align: right;">9,987 (0.49)</td>
+<td style="text-align: right;">9,525 (0.49)</td>
+<td style="text-align: right;">8,905 (0.52)</td>
+<td style="text-align: right;">10,863 (0.42)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1981</td>
+<td style="text-align: right;">8,330 (0.35)</td>
+<td style="text-align: right;">7,922 (0.35)</td>
+<td style="text-align: right;">6,830 (0.39)</td>
+<td style="text-align: right;">13,137 (0.47)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1982</td>
+<td style="text-align: right;">8,122 (0.32)</td>
+<td style="text-align: right;">7,694 (0.32)</td>
+<td style="text-align: right;">6,959 (0.35)</td>
+<td style="text-align: right;">11,176 (0.45)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1983</td>
+<td style="text-align: right;">7,900 (0.31)</td>
+<td style="text-align: right;">7,502 (0.31)</td>
+<td style="text-align: right;">6,264 (0.37)</td>
+<td style="text-align: right;">11,206 (0.38)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1984</td>
+<td style="text-align: right;">8,092 (0.33)</td>
+<td style="text-align: right;">7,704 (0.33)</td>
+<td style="text-align: right;">6,700 (0.38)</td>
+<td style="text-align: right;">12,709 (0.36)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1985</td>
+<td style="text-align: right;">8,976 (0.32)</td>
+<td style="text-align: right;">8,530 (0.32)</td>
+<td style="text-align: right;">7,856 (0.35)</td>
+<td style="text-align: right;">9,123 (0.39)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1986</td>
+<td style="text-align: right;">11,836 (0.34)</td>
+<td style="text-align: right;">11,266 (0.33)</td>
+<td style="text-align: right;">10,149 (0.37)</td>
+<td style="text-align: right;">5,404 (0.46)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1987</td>
+<td style="text-align: right;">13,003 (0.39)</td>
+<td style="text-align: right;">12,371 (0.39)</td>
+<td style="text-align: right;">11,577 (0.41)</td>
+<td style="text-align: right;">9,171 (0.40)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1988</td>
+<td style="text-align: right;">10,887 (0.33)</td>
+<td style="text-align: right;">10,346 (0.33)</td>
+<td style="text-align: right;">9,310 (0.36)</td>
+<td style="text-align: right;">14,153 (0.38)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1989</td>
+<td style="text-align: right;">11,535 (0.27)</td>
+<td style="text-align: right;">10,961 (0.27)</td>
+<td style="text-align: right;">10,342 (0.28)</td>
+<td style="text-align: right;">11,864 (0.43)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1990</td>
+<td style="text-align: right;">11,641 (0.26)</td>
+<td style="text-align: right;">11,086 (0.26)</td>
+<td style="text-align: right;">9,582 (0.30)</td>
+<td style="text-align: right;">8,229 (0.37)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1991</td>
+<td style="text-align: right;">8,876 (0.28)</td>
+<td style="text-align: right;">8,437 (0.28)</td>
+<td style="text-align: right;">7,392 (0.32)</td>
+<td style="text-align: right;">6,628 (0.46)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1992</td>
+<td style="text-align: right;">5,389 (0.32)</td>
+<td style="text-align: right;">5,119 (0.32)</td>
+<td style="text-align: right;">3,400 (0.47)</td>
+<td style="text-align: right;">9,591 (0.37)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1993</td>
+<td style="text-align: right;">13,154 (0.24)</td>
+<td style="text-align: right;">12,512 (0.24)</td>
+<td style="text-align: right;">9,742 (0.30)</td>
+<td style="text-align: right;">10,789 (0.37)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1994</td>
+<td style="text-align: right;">13,104 (0.25)</td>
+<td style="text-align: right;">12,429 (0.25)</td>
+<td style="text-align: right;">9,939 (0.30)</td>
+<td style="text-align: right;">10,721 (0.37)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1995</td>
+<td style="text-align: right;">10,339 (0.33)</td>
+<td style="text-align: right;">9,834 (0.33)</td>
+<td style="text-align: right;">8,348 (0.38)</td>
+<td style="text-align: right;">9,080 (0.37)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1996</td>
+<td style="text-align: right;">7,355 (0.30)</td>
+<td style="text-align: right;">7,050 (0.30)</td>
+<td style="text-align: right;">5,545 (0.38)</td>
+<td style="text-align: right;">12,529 (0.27)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1997</td>
+<td style="text-align: right;">8,543 (0.25)</td>
+<td style="text-align: right;">8,205 (0.25)</td>
+<td style="text-align: right;">6,657 (0.31)</td>
+<td style="text-align: right;">17,649 (0.13)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1998</td>
+<td style="text-align: right;">10,071 (0.27)</td>
+<td style="text-align: right;">9,651 (0.27)</td>
+<td style="text-align: right;">8,863 (0.29)</td>
+<td style="text-align: right;">13,991 (0.08)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1999</td>
+<td style="text-align: right;">10,614 (0.26)</td>
+<td style="text-align: right;">10,205 (0.26)</td>
+<td style="text-align: right;">8,802 (0.30)</td>
+<td style="text-align: right;">13,162 (0.05)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2000</td>
+<td style="text-align: right;">11,116 (0.24)</td>
+<td style="text-align: right;">10,655 (0.24)</td>
+<td style="text-align: right;">8,954 (0.28)</td>
+<td style="text-align: right;">12,737 (0.06)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2001</td>
+<td style="text-align: right;">9,579 (0.25)</td>
+<td style="text-align: right;">9,200 (0.25)</td>
+<td style="text-align: right;">8,268 (0.28)</td>
+<td style="text-align: right;">9,563 (0.07)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">13,137 (0.21)</td>
+<td style="text-align: right;">12,630 (0.21)</td>
+<td style="text-align: right;">11,543 (0.23)</td>
+<td style="text-align: right;">8,844 (0.07)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2003</td>
+<td style="text-align: right;">14,877 (0.02)</td>
+<td style="text-align: right;">14,272 (0.02)</td>
+<td style="text-align: right;">13,255 (0.01)</td>
+<td style="text-align: right;">3,806 (0.10)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2004</td>
+<td style="text-align: right;">14,175 (0.03)</td>
+<td style="text-align: right;">13,606 (0.03)</td>
+<td style="text-align: right;">12,025 (0.02)</td>
+<td style="text-align: right;">5,147 (0.06)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">13,106 (0.03)</td>
+<td style="text-align: right;">12,589 (0.03)</td>
+<td style="text-align: right;">11,137 (0.03)</td>
+<td style="text-align: right;">4,297 (0.06)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">10,774 (0.03)</td>
+<td style="text-align: right;">10,350 (0.03)</td>
+<td style="text-align: right;">8,984 (0.03)</td>
+<td style="text-align: right;">5,147 (0.06)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">12,063 (0.03)</td>
+<td style="text-align: right;">11,585 (0.03)</td>
+<td style="text-align: right;">9,587 (0.02)</td>
+<td style="text-align: right;">4,118 (0.07)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">7,690 (0.04)</td>
+<td style="text-align: right;">7,384 (0.04)</td>
+<td style="text-align: right;">5,804 (0.03)</td>
+<td style="text-align: right;">3,368 (0.07)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">4,319 (0.05)</td>
+<td style="text-align: right;">4,146 (0.05)</td>
+<td style="text-align: right;">3,459 (0.02)</td>
+<td style="text-align: right;">7,182 (0.06)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">5,021 (0.03)</td>
+<td style="text-align: right;">4,822 (0.03)</td>
+<td style="text-align: right;">4,445 (0.02)</td>
+<td style="text-align: right;">9,593 (0.05)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">4,306 (0.04)</td>
+<td style="text-align: right;">4,132 (0.04)</td>
+<td style="text-align: right;">3,546 (0.02)</td>
+<td style="text-align: right;">8,983 (0.05)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">4,758 (0.04)</td>
+<td style="text-align: right;">4,566 (0.04)</td>
+<td style="text-align: right;">4,503 (0.04)</td>
+<td style="text-align: right;">4,130 (0.08)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">4,686 (0.03)</td>
+<td style="text-align: right;">4,500 (0.03)</td>
+<td style="text-align: right;">4,359 (0.03)</td>
+<td style="text-align: right;">6,841 (0.05)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">2,869 (0.04)</td>
+<td style="text-align: right;">2,753 (0.04)</td>
+<td style="text-align: right;">2,510 (0.02)</td>
+<td style="text-align: right;">3,594 (0.08)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">10,588 (0.05)</td>
+<td style="text-align: right;">10,169 (0.05)</td>
+<td style="text-align: right;">9,798 (0.05)</td>
+<td style="text-align: right;">4,969 (0.05)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">8,862 (0.03)</td>
+<td style="text-align: right;">8,504 (0.03)</td>
+<td style="text-align: right;">7,143 (0.02)</td>
+<td style="text-align: right;">3,031 (0.11)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">6,928 (0.03)</td>
+<td style="text-align: right;">6,656 (0.03)</td>
+<td style="text-align: right;">5,792 (0.02)</td>
+<td style="text-align: right;">3,708 (0.24)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">3,428 (0.05)</td>
+<td style="text-align: right;">3,286 (0.05)</td>
+<td style="text-align: right;">3,173 (0.02)</td>
+<td style="text-align: right;">4,570 (0.49)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">6,008 (0.02)</td>
+<td style="text-align: right;">5,769 (0.02)</td>
+<td style="text-align: right;">5,596 (0.02)</td>
+<td style="text-align: right;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">4,140 (0.04)</td>
+<td style="text-align: right;">3,976 (0.04)</td>
+<td style="text-align: right;">3,626 (0.02)</td>
+<td style="text-align: right;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">4,478 (0.02)</td>
+<td style="text-align: right;">4,298 (0.02)</td>
+<td style="text-align: right;">4,298 (0.02)</td>
+<td style="text-align: right;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">3,257 (0.02)</td>
+<td style="text-align: right;">3,126 (0.02)</td>
+<td style="text-align: right;">3,126 (0.02)</td>
+<td style="text-align: right;">-</td>
+</tr>
+</tbody>
+</table>
+<p>TRUE</p>
+</div>
+</div>
+</section>
+<section id="plot_age" class="level2">
+<h2 class="anchored" data-anchor-id="plot_age">plot_age</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tables-Plots_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">TRUE</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="plot_chinbegs" class="level2">
+<h2 class="anchored" data-anchor-id="plot_chinbegs">plot_chinBEG’s</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tables-Plots_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">TRUE</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="plot_erfit" class="level2">
+<h2 class="anchored" data-anchor-id="plot_erfit">plot_ERfit</h2>
+</section>
+<section id="plot_ey" class="level2">
+<h2 class="anchored" data-anchor-id="plot_ey">plot_ey</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tables-Plots_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">TRUE</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="plot_horse_red" class="level2">
+<h2 class="anchored" data-anchor-id="plot_horse_red">plot_horse_red</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tables-Plots_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">TRUE</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="plot_horse_full" class="level2">
+<h2 class="anchored" data-anchor-id="plot_horse_full">plot_horse_full</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tables-Plots_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">TRUE</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="plot_swgoals" class="level2">
+<h2 class="anchored" data-anchor-id="plot_swgoals">plot_Swgoals</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Tables-Plots_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">TRUE</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="get_rhat" class="level2">
+<h2 class="anchored" data-anchor-id="get_rhat">get_Rhat</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+              Rhat
+S.msy     1.263821
+S.eq      1.107285
+lnalpha.c 1.112742
+alpha     1.217898
+U.msy     1.268635
+
+$`R^ quantiles`
+      90%       91%       92%       93%       94%       95%       96%       97% 
+ 4898.910  5313.848  6880.216  7756.021  8691.797  9663.302 10731.842 11750.853 
+      98%       99%      100% 
+13458.120 16482.044 99274.961 </code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -34,71 +34,71 @@ get_BEGbounds <- function(Comp_Smsy){
 #' #' get_ids(c("aris", "ncpue", "nasb", "didson", "scpue"))
 #' #'
 #' #' @export
-#' get_ids <- function(indicies,
-#'                     psi_id = c("trib_delta" = 1 , "trib_median" = 2, "main_delta" = 3, "main_median" = 4),
-#'                     year_range = NULL) {
-#'   index_sort <- sort(indicies)
-#'   
-#'   index_id <- 1:length(indicies)
-#'   names(index_id) <- index_sort
-#'   
-#'   years_index <- plyr::laply(index_sort, function(x) {range(as.integer(get(x)$year))})
-#'   if(!is.null(year_range)){
-#'     years_index[, 1] <- ifelse(years_index[, 1] < year_range[1], year_range[1], years_index[, 1])
-#'     years_index[, 2] <- ifelse(years_index[, 2] > year_range[2], year_range[2], years_index[, 2])
-#'   }
-#'   rownames(years_index) <- index_sort
-#'   colnames(years_index) <- c("first", "last")
-#'   
-#'   year_id <- 1:(max(years_index) - min(years_index) + 1)
-#'   names(year_id) <- min(years_index):max(years_index)
-#'   
-#'   loc_id <- ifelse(index_sort == "aris", 2, 1)
-#'   names(loc_id) <- index_sort
-#'   loc_id
-#'   
-#'   
-#'   years_loc <- data.frame(first = aggregate(years_index, list(loc_id[rownames(years_index)]), min)[, 2],
-#'                           last = aggregate(years_index, list(loc_id[rownames(years_index)]), max)[, 3],
-#'                           row.names = aggregate(years_index, list(loc_id[rownames(years_index)]), min)[, 1]) %>%
-#'     as.matrix()
-#'   
-#'   psi_id <- psi_id
-#'   
-#'   list <- list(indices_to_include = indicies,
-#'                index_id = index_id,
-#'                years_index = years_index,
-#'                years_loc = years_loc,
-#'                year_id = year_id,
-#'                loc_id = loc_id,
-#'                psi_id = psi_id)
-#'   list2env(list, .GlobalEnv)
-#' }
-#' 
-#' #Initial values SRA model
-#' get_SRAinits <- function(){
-#'   list(D.scale = runif(2, .1, .5),
-#'        beta = rlnorm(2, log(3.2e-5), 0.4),
-#'        lnalpha = rlnorm(2, log(1.6), 0.4),
-#'        log.resid.0 = rnorm(2, 0, 1),
-#'        mean.log.R = rnorm(2, 11.3, 0.5),
-#'        p.MR = runif(2, 0.6, 0.9),
-#'        phi = runif(2, 0.25, 0.75),
-#'        tau.R = runif(1, 1, 25),
-#'        tau.white = runif(2, 1, 25),
-#'        log.qer = c(-8.4,0.094,-12),
-#'        tau.ier = c(3.199,21.02,32.57),
-#'        log.qlr = c(-8.4,0.094,-12,-4),
-#'        tau.ilr = c(3,21,32,32),
-#'        log.R = matrix(c(rnorm(jags_dat$Y + 2, 9, 1), rnorm(jags_dat$Y + 2, 11, 1)), nrow = jags_dat$Y + 2, ncol = 2),
-#'        mu.Habove = matrix(runif(2 * jags_dat$Y, 0.1, 0.5), nrow = jags_dat$Y, ncol = 2),
-#'        psi = runif(2, 0, 0.5)
-#'   )
-#' }
+get_ids <- function(indicies,
+                    psi_id = c("trib_delta" = 1 , "trib_median" = 2, "main_delta" = 3, "main_median" = 4),
+                    year_range = NULL) {
+  index_sort <- sort(indicies)
+
+  index_id <- 1:length(indicies)
+  names(index_id) <- index_sort
+
+  years_index <- plyr::laply(index_sort, function(x) {range(as.integer(get(x)$year))})
+  if(!is.null(year_range)){
+    years_index[, 1] <- ifelse(years_index[, 1] < year_range[1], year_range[1], years_index[, 1])
+    years_index[, 2] <- ifelse(years_index[, 2] > year_range[2], year_range[2], years_index[, 2])
+  }
+  rownames(years_index) <- index_sort
+  colnames(years_index) <- c("first", "last")
+
+  year_id <- 1:(max(years_index) - min(years_index) + 1)
+  names(year_id) <- min(years_index):max(years_index)
+
+  loc_id <- ifelse(index_sort == "aris", 2, 1)
+  names(loc_id) <- index_sort
+  loc_id
+
+
+  years_loc <- data.frame(first = aggregate(years_index, list(loc_id[rownames(years_index)]), min)[, 2],
+                          last = aggregate(years_index, list(loc_id[rownames(years_index)]), max)[, 3],
+                          row.names = aggregate(years_index, list(loc_id[rownames(years_index)]), min)[, 1]) %>%
+    as.matrix()
+
+  psi_id <- psi_id
+
+  list <- list(indices_to_include = indicies,
+               index_id = index_id,
+               years_index = years_index,
+               years_loc = years_loc,
+               year_id = year_id,
+               loc_id = loc_id,
+               psi_id = psi_id)
+  list2env(list, .GlobalEnv)
+}
+
+#Initial values SRA model
+get_SRAinits <- function(){
+  list(D.scale = runif(2, .1, .5),
+       beta = rlnorm(2, log(3.2e-5), 0.4),
+       lnalpha = rlnorm(2, log(1.6), 0.4),
+       log.resid.0 = rnorm(2, 0, 1),
+       mean.log.R = rnorm(2, 11.3, 0.5),
+       p.MR = runif(2, 0.6, 0.9),
+       phi = runif(2, 0.25, 0.75),
+       tau.R = runif(1, 1, 25),
+       tau.white = runif(2, 1, 25),
+       log.qer = c(-8.4,0.094,-12),
+       tau.ier = c(3.199,21.02,32.57),
+       log.qlr = c(-8.4,0.094,-12,-4),
+       tau.ilr = c(3,21,32,32),
+       log.R = matrix(c(rnorm(jags_dat$Y + 2, 9, 1), rnorm(jags_dat$Y + 2, 11, 1)), nrow = jags_dat$Y + 2, ncol = 2),
+       mu.Habove = matrix(runif(2 * jags_dat$Y, 0.1, 0.5), nrow = jags_dat$Y, ncol = 2),
+       psi = runif(2, 0, 0.5)
+  )
+}
 
 
 # Create a OYP/ORP/OF profile dataset -------------------------------------
-
+# Modified function to include values of SY and S.msy to be used with the plot_ey() and plot_profile() functions
 
 #' Creates a dataset for plotting OYP, ORP and EY plots
 #'
@@ -149,9 +149,13 @@ get_profile <- function(post_dat){
                   OFP70 = (SY - 0.7 * MSY) < 0 & (s < S.msy),
                   OFP80 = (SY - 0.8 * MSY) < 0 & (s < S.msy),
                   OFP90 = (SY - 0.9 * MSY) < 0 & (s < S.msy)) %>%
-    dplyr::select(s, dplyr::starts_with("O")) %>%
+    dplyr::select(s, dplyr::starts_with("O"),SY,S.msy) %>%
     dplyr::group_by(s) %>%
-    dplyr::summarise(across(starts_with("O"), function(x) mean(x, na.rm = TRUE)))
+    dplyr::summarise(across(starts_with("O"), function(x) mean(x, na.rm = TRUE)),
+                     median.SY = median(SY, na.rm = TRUE),
+                     p25.SY = quantile(SY, probs = 0.25, na.rm = TRUE),
+                     p75.SY = quantile(SY, probs = 0.75, na.rm = TRUE),
+                     S.msy = median(S.msy))
 }
 
 # Identify poorly converging parameters -----------------------------------
@@ -174,3 +178,17 @@ get_Rhat <- function(post, cutoff = 1.1){
   list(data.frame("Rhat" = temp[temp > cutoff]),
        "R^ quantiles" = quantile(post$summary[colnames(post$summary) == "Rhat"], probs = seq(0.9, 1, by = .01)))
 }
+
+
+# Get Summary
+## Other functions seem to rely on this function. Stole the code from the KenaiSRA. 
+## Post needs to be an MCMC list. Importing the JagsUI object does not work, so need to use post$samples. 
+
+get_summary <- function(post){
+  sumout <- coda:::summary.mcmc.list(post, quantiles = c(0.025, 0.05, 0.25, 0.5, 0.75, 0.95, 0.975))
+  statsquants <- as.data.frame(cbind(sumout$statistics,sumout$quantiles))
+  tibble::as_tibble(statsquants, rownames = NA)
+}
+
+
+

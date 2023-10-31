@@ -1,0 +1,98 @@
+---
+title: "Tables and plots"
+format: 
+  html:
+    toc: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, fig.cap = TRUE, fig.align = 'center')
+#load packages
+packs <- c("jagsUI", "tidyverse")
+lapply(packs, require, character.only = TRUE)
+
+#source functions
+function_files <- list.files(path="..\\functions")
+lapply(function_files, function(x) source(paste0("..\\functions\\", x)))
+
+#load datasets
+data_names <- list.files(path="..\\data")
+lapply(data_names, function(x) load(paste0("..\\data\\", x), .GlobalEnv))
+
+post <- readRDS("..\\output\\post_1977on")
+post_red <- readRDS("..\\output\\post_2003on")
+```
+
+## table_age
+
+::: panel-tabset
+### p(age at maturity)
+
+```{r}
+table_age(post_dat = post,node = "p",firstyr = 1977)
+```
+
+### q(age at return)
+
+```{r}
+table_age(post_dat = post,node = "q",firstyr = 1977)
+```
+
+### N.ta(Number at return)
+
+```{r}
+table_age(post_dat = post,node = "N.ta",firstyr = 1977)
+```
+:::
+
+## table_brood
+
+```{r}
+tbl_brood <- table_brood(stats_dat = get_summary(post$samples),firstyr = 1976)
+knitr::kable(tbl_brood, escape = FALSE, align = "r")
+```
+
+## table_state
+
+```{r}
+table_state(post,firstyr = 1977)
+```
+
+## plot_age
+
+```{r}
+plot_age(post,firstyr = 1977)
+```
+
+## plot_chinBEG's
+
+```{r}
+plot_chinBEGs(dat_chinBEGs)
+```
+## plot_ERfit
+
+## plot_ey
+```{r}
+plot_ey(get_profile(post),rug = TRUE, goal_range = c(3200,6400))
+```
+## plot_horse_red
+```{r}
+plot_horse_red(post_red,firstyr = 1997)
+```
+## plot_horse_full
+```{r}
+plot_horse_full(post,firstyr = 1977)
+```
+## plot_Swgoals
+
+```{r}
+plot_Swgoals(post,c(3200,6400))
+```
+
+
+## get_Rhat
+
+```{r}
+get_Rhat(post)
+```
+
