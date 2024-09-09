@@ -75,7 +75,7 @@ table_age <- function(post_dat, node, firstyr = 1977){
 #' @return A tibble
 #'
 #' @examples
-#' table_brood(get_summary(post), 1)
+#' table_brood(get_summary(post))
 #'
 #' @export
 table_brood <- function(stats_dat,firstyr = 1977){
@@ -84,8 +84,8 @@ table_brood <- function(stats_dat,firstyr = 1977){
     tibble::rownames_to_column() %>%
     dplyr::filter(grepl(paste0("^N.ta\\[\\d+,\\d\\]"), rowname)) %>%
     dplyr::select(rowname = "rowname", mean = "Mean") %>%
-    dplyr::mutate(age_n = 2 + as.numeric(gsub("N.ta\\[\\d+,(\\d)\\]", "\\1", rowname)),
-                  year = firstyr + as.numeric(gsub("N.ta\\[(\\d+),\\d\\]", "\\1", rowname)) - age_n,
+    dplyr::mutate(age_n = 3 + as.numeric(gsub("N.ta\\[\\d+,(\\d)\\]", "\\1", rowname)),
+                  year = (firstyr - 1) + as.numeric(gsub("N.ta\\[(\\d+),\\d\\]", "\\1", rowname)) - age_n,
                   age_c = paste0("age-", age_n)) %>%
     dplyr::select(year, age_c, mean) %>%
     #tidyr::spread(age_c, mean)
@@ -97,7 +97,7 @@ table_brood <- function(stats_dat,firstyr = 1977){
     dplyr::select(rowname = "rowname", mean = "Mean") %>%
     dplyr::mutate(name = stringr::str_sub(rowname, 1, stringr::str_locate(rowname, "\\[")[, 1] - 1),
                   index = as.numeric(gsub(".\\[(\\d+)\\]", "\\1", rowname)),
-                  year = (name == "S") * (firstyr + index) + (name == "R") * (firstyr - 7 + index)) %>%
+                  year = (name == "S") * ((firstyr - 1) + index) + (name == "R") * ((firstyr - 1) - 7 + index)) %>%
     dplyr::select(year, mean, name) %>%
     tidyr::spread(name, mean) %>%
     dplyr::select(year, S, R) %>%
