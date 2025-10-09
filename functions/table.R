@@ -78,28 +78,27 @@ table_age <- function(post_dat, node, firstyr = 1977){
 #' table_brood(get_summary(post))
 #'
 #' @export
-table_brood <- function(stats_dat,firstyr = 1977){
+table_brood <- function(stats_dat, firstyr = 1977){
   N_ta <-
     stats_dat %>%
     tibble::rownames_to_column() %>%
     dplyr::filter(grepl(paste0("^N.ta\\[\\d+,\\d\\]"), rowname)) %>%
-    dplyr::select(rowname = "rowname", mean = "Mean") %>%
+    dplyr::select(rowname = "rowname", median = "50%") %>%
     dplyr::mutate(age_n = 2 + as.numeric(gsub("N.ta\\[\\d+,(\\d)\\]", "\\1", rowname)),
                   year = (firstyr - 1) + as.numeric(gsub("N.ta\\[(\\d+),\\d\\]", "\\1", rowname)) - age_n,
                   age_c = paste0("age-", age_n)) %>%
-    dplyr::select(year, age_c, mean) %>%
-    #tidyr::spread(age_c, mean)
-    pivot_wider(names_from = age_c, values_from = mean)
+    dplyr::select(year, age_c, median) %>%
+    pivot_wider(names_from = age_c, values_from = median)
 
   stats_dat %>%
     tibble::rownames_to_column() %>%
     dplyr::filter(grepl(paste0("^S\\[\\d+|^R\\[\\d+"), rowname)) %>%
-    dplyr::select(rowname = "rowname", mean = "Mean") %>%
+    dplyr::select(rowname = "rowname", median = "50%") %>%
     dplyr::mutate(name = stringr::str_sub(rowname, 1, stringr::str_locate(rowname, "\\[")[, 1] - 1),
                   index = as.numeric(gsub(".\\[(\\d+)\\]", "\\1", rowname)),
                   year = (name == "S") * ((firstyr - 1) + index) + (name == "R") * ((firstyr - 1) - 6 + index)) %>%
-    dplyr::select(year, mean, name) %>%
-    tidyr::spread(name, mean) %>%
+    dplyr::select(year, median, name) %>%
+    tidyr::spread(name, median) %>%
     dplyr::select(year, S, R) %>%
     dplyr::full_join(N_ta, by = "year") %>%
     dplyr::mutate_all(as.integer) 
@@ -329,7 +328,7 @@ table_state <- function(post_dat, firstyr = 1977){
     dplyr::filter(grepl(paste0("^R\\[\\d+|S\\[\\d+|N\\[\\d+|IR\\[\\d+"), rowname)) %>%
     dplyr::mutate(name = gsub("(.*)\\[\\d+\\]", "\\1", rowname),
                   index = as.numeric(gsub(".*\\[(\\d+)\\]", "\\1", rowname)),
-                  year = (name != c("R")) * (firstyr - 1 + index) + (name == "R") * (firstyr - 1 - 7 + index),
+                  year = (name != c("R")) * (firstyr - 1 + index) + (name == "R") * (firstyr - 1 - 6 + index),
                   cv = sd/mean,
                   print = paste0(format(as.integer(median), big.mark = ","), " (", format(round(cv, 2), nsmall = 2), ")")) %>%
     dplyr::select(year, print, name) %>%
